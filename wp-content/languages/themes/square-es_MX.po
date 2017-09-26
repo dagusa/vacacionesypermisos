@@ -1,0 +1,508 @@
+# Translation of Square in Spanish (Mexico)
+# This file is distributed under the same license as the Square package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2016-06-09 19:00:41+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.1.0-alpha\n"
+"Project-Id-Version: Square\n"
+
+#. Description of the plugin/theme
+msgid "Square is a flexible responsive multipurpose theme compatible with all browsers and devices, fully mobile friendly, loaded with lots of features. It is a minimal theme based on WordPress Customizer that allows you to customize with live preview. The theme can be used for business, corporate, digital agency, personal, portfolio, photography, parallax, blogs and magazines. Square is eCommerce (WooCommerce) Compatible, Polylang Compatible, WPML, RTL, Retina Ready, SEO Friendly and Support bbPress and BuddyPress. More over it is a complete theme. For demo http://demo.hashthemes.com/square"
+msgstr "Square es un tema de usos múltiples de respuesta flexible, compatible con todos los navegadores y dispositivos móviles, totalmente amigable con los móviles, cargado con un montón de características. Es un tema mínimo basado en WordPress que le permite personalizar la vista previa en vivo. El tema puede ser usado para los negocios, la agencia corporativa, digital, personal, cartera, fotografía, paralaje, blogs y revistas. Square compatible con ecommerce (WooCommerce), compatible con Polylang, WPML, RTL, Retina Ready, SEO y soporte bbPress y BuddyPress. Sobre encima de esto es un tema completo. Para una demostración visite http://demo.hashthemes.com/square"
+
+#. Theme Name of the plugin/theme
+msgid "Square"
+msgstr "Square"
+
+#: inc/customizer.php:821
+msgid "Instagram"
+msgstr "Instagram"
+
+#: woocommerce/single-product-reviews.php:99
+msgid "Only logged in customers who have purchased this product may leave a review."
+msgstr "Solo los usuarios registrados que hayan comprado este producto pueden dejar una reseña."
+
+#: woocommerce/single-product-reviews.php:85
+msgid "Not that bad"
+msgstr "No está tan mal"
+
+#: woocommerce/single-product-reviews.php:86
+msgid "Very Poor"
+msgstr "Muy Pobre"
+
+#: woocommerce/single-product-reviews.php:90
+msgid "Your Review"
+msgstr "Tu opinión"
+
+#: woocommerce/single-product-reviews.php:81
+msgid "Rate&hellip;"
+msgstr "Tarifa&hellip;"
+
+#: woocommerce/single-product-reviews.php:82
+msgid "Perfect"
+msgstr "Perfecto"
+
+#: woocommerce/single-product-reviews.php:83
+msgid "Good"
+msgstr "Bueno"
+
+#: woocommerce/single-product-reviews.php:84
+msgid "Average"
+msgstr "Normal"
+
+#: woocommerce/single-product-reviews.php:76
+msgid "You must be <a href=\"%s\">logged in</a> to post a review."
+msgstr "Debes <a href=\"%s\">iniciar sesión</a> para escribir una opinión."
+
+#: woocommerce/single-product-reviews.php:80
+msgid "Your Rating"
+msgstr "Tu puntuación"
+
+#: woocommerce/single-product-reviews.php:67
+msgid "Name*"
+msgstr "Nombre*"
+
+#: woocommerce/single-product-reviews.php:68
+msgid "Email*"
+msgstr "Email*"
+
+#: woocommerce/single-product-reviews.php:70
+msgid "Submit"
+msgstr "Enviar"
+
+#: woocommerce/single-product-reviews.php:49
+msgid "There are no reviews yet."
+msgstr "No hay opiniones todavía."
+
+#: woocommerce/single-product-reviews.php:62
+msgid "Add a review"
+msgstr "Añadir un comentario"
+
+#: woocommerce/single-product-reviews.php:62
+msgid "Be the first to review &ldquo;%s&rdquo;"
+msgstr "Sé el primero en calificar &ldquo;%s&rdquo;"
+
+#: woocommerce/single-product-reviews.php:63
+msgid "Leave a Reply to %s"
+msgstr "Deja un comentario para %s"
+
+#: functions.php:96
+msgid "Shop Sidebar"
+msgstr "Barra Lateral (Tienda)"
+
+#: inc/customizer.php:399
+msgid "Disable About Section "
+msgstr "Deshabilitar Acerca De"
+
+#: inc/customizer.php:506
+msgid "Disable Tab Section "
+msgstr "Deshabilitar Tabla"
+
+#: inc/customizer.php:638
+msgid "Section Title & Logo"
+msgstr "Titulo & Logo"
+
+#: inc/square-metabox.php:16
+msgid "Sidebar Layout"
+msgstr "Diseño (Barra Lateral)"
+
+#: inc/customizer.php:478
+msgid "Recommended Image Size: 400X420px"
+msgstr "Tamaño recomendado de imagen: 400X420px"
+
+#: inc/customizer.php:617
+msgid "Disable Client Logo Section "
+msgstr "Deshabilitar Logo De Cliente"
+
+#: inc/customizer.php:679
+msgid "Recommended Image Size: 220X90px"
+msgstr "Tamaño recomendado de imagen: 220X90px"
+
+#: inc/customizer.php:116
+msgid "Recommended Image Size: 1800X400px"
+msgstr "Tamaño recomendado de imagen: 1800X400px"
+
+#: inc/customizer.php:276
+msgid "Recommended Image Size: 1800X800px"
+msgstr "Tamaño recomendado de imagen: 1800X800px"
+
+#: inc/customizer.php:307
+msgid "Enable Read More link "
+msgstr "Habilitar Vinculo \"Leer Mas\""
+
+#: functions.php:76
+msgid "Right Sidebar"
+msgstr "Barra lateral derecha"
+
+#: inc/customizer.php:95 inc/customizer.php:113
+msgid "Page Header Banner"
+msgstr "Imagen De Encabezado"
+
+#: inc/customizer.php:62 inc/customizer.php:84
+msgid "Header Background Color"
+msgstr "Color De Fondo De Cabecera"
+
+#: template-parts/content-summary.php:41 template-parts/content.php:35
+msgid "Continue reading &rarr;"
+msgstr "Leer mas $rarr;"
+
+#: inc/customizer.php:27
+msgid "Black"
+msgstr "Negro"
+
+#: inc/customizer.php:26
+msgid "White"
+msgstr "Blanco"
+
+#: front-page.php:24 inc/customizer.php:244 templates/home-template.php:15
+msgid "Create website in no time"
+msgstr "Cree un sitio web en poco tiempo"
+
+#: front-page.php:23 inc/customizer.php:225 templates/home-template.php:14
+msgid "Free WordPress Themes"
+msgstr "Temas WordPress libres"
+
+#: inc/customizer.php:764
+msgid "Pinterest"
+msgstr "Pinterest"
+
+#: inc/customizer.php:783
+msgid "Youtube"
+msgstr "Youtube"
+
+#: inc/customizer.php:802
+msgid "Linkedin"
+msgstr "Linkedin"
+
+#: inc/customizer.php:745
+msgid "Google Plus"
+msgstr "Google Plus"
+
+#: inc/customizer.php:726
+msgid "Twitter"
+msgstr "Twitter"
+
+#: inc/customizer.php:688
+msgid "Footer Social Icons"
+msgstr "Iconos Sociales (Pie De Pagina)"
+
+#: inc/customizer.php:707
+msgid "Facebook"
+msgstr "Facebook"
+
+#. Template Name of the plugin/theme
+msgid "Home Page"
+msgstr "Inicio"
+
+#. translators: %s: Name of current post
+#: template-parts/content-page.php:27
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: template-parts/content-page.php:16 template-parts/content-single.php:20
+#: template-parts/content-summary.php:44 template-parts/content.php:40
+msgid "Pages:"
+msgstr "Páginas:"
+
+#: template-parts/content-none.php:27
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr "Parece que no encontramos lo que estás buscando. Puede que una búsqueda te ayude."
+
+#: template-parts/content-none.php:22
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr "Lo sentimos, pero no encaja nada con los términos de la búsqueda. Inténtalo de nuevo con algunas palabras clave diferentes."
+
+#: template-parts/content-none.php:18
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr "¿Preparado para publicar tu primera entrada? <a href=\"%1$s\">Empieza aquí</a>"
+
+#: template-parts/content-none.php:12
+msgid "Nothing Found"
+msgstr "Nada encontrado"
+
+#: search.php:11
+msgid "Search Results for: %s"
+msgstr "Resultados de búsqueda por: %s"
+
+#: inc/template-tags.php:67 inc/template-tags.php:73
+msgid "%1$s"
+msgstr "%1$s"
+
+#: inc/template-tags.php:49
+msgid " Comment Closed"
+msgstr "Comentario Cerrado"
+
+#. translators: used between list items, there is a space after the comma
+#: inc/template-tags.php:65 inc/template-tags.php:71
+msgid ", "
+msgstr ", "
+
+#: inc/template-tags.php:43
+msgid " Comments"
+msgstr "Comentarios"
+
+#: inc/template-tags.php:45
+msgid "1 Comment"
+msgstr "1 comentario"
+
+#: inc/template-tags.php:41
+msgid "No Comments"
+msgstr "No hay comentarios"
+
+#: inc/template-tags.php:28
+msgctxt "post date"
+msgid "%s"
+msgstr "%s"
+
+#: inc/template-tags.php:33
+msgctxt "post author"
+msgid "by %s"
+msgstr "Por %s"
+
+#. translators: 1: comment date, 2: comment time
+#: inc/square-functions.php:100
+msgid "%1$s at %2$s"
+msgstr "%1$s en %2$s"
+
+#: inc/square-functions.php:88
+msgid "Edit"
+msgstr "Editar"
+
+#: inc/customizer.php:896
+msgid "Remove all images"
+msgstr "Eliminar todas las imagenes"
+
+#: inc/square-functions.php:86
+msgid "Your comment is awaiting moderation."
+msgstr "Tu comentario está esperando ser moderado."
+
+#: inc/customizer.php:678
+msgid "Upload Clients Logos"
+msgstr "Subir Logos De Clientes"
+
+#: inc/customizer.php:893
+msgid "Upload"
+msgstr "Subir"
+
+#: inc/customizer.php:289
+msgid "Featured Section"
+msgstr "Sección Destacada"
+
+#: inc/customizer.php:329
+msgid "Featured Page "
+msgstr "Pagina Destacada"
+
+#: inc/customizer.php:348 inc/customizer.php:438 inc/customizer.php:589
+msgid "Select a Page"
+msgstr "Seleccione Una Pagina"
+
+#: inc/customizer.php:369 inc/customizer.php:569
+msgid "FontAwesome Icon"
+msgstr "Iconos FontAwesome"
+
+#: inc/customizer.php:381
+msgid "About Us Section"
+msgstr "Sección Acerca De"
+
+#: inc/customizer.php:419
+msgid "About Page "
+msgstr "Pagina Acerca De"
+
+#: inc/customizer.php:457
+msgid "About Page Stack Images"
+msgstr "Acerca De (Imágenes)"
+
+#: inc/customizer.php:477
+msgid "About Us Stack Image"
+msgstr "Acerca De (Imagen)"
+
+#: inc/customizer.php:488
+msgid "Tab Section"
+msgstr "Sección De Pestañas"
+
+#: inc/customizer.php:528
+msgid "Tab "
+msgstr "Pestaña"
+
+#: inc/customizer.php:548
+msgid "Tab Title"
+msgstr "Titulo De Pestaña"
+
+#: inc/customizer.php:599
+msgid "Clients Logo Section"
+msgstr "Seccion De Logo Del Cliente"
+
+#: inc/customizer.php:658
+msgid "Title"
+msgstr "Titulo"
+
+#: inc/customizer.php:237
+msgid "Caption Title"
+msgstr "Leyenda Del Titulo"
+
+#: inc/customizer.php:256
+msgid "Caption SubTitle"
+msgstr "Leyenda Del Subtitulo"
+
+#: inc/customizer.php:273
+msgid "Slider Image"
+msgstr "Imagen Deslizante"
+
+#: inc/customizer.php:185
+msgid "Home Page Settings"
+msgstr "Configuración De Pagina De Inicio"
+
+#: inc/customizer.php:194
+msgid "Slider Section"
+msgstr "Sección carrusel"
+
+#: inc/customizer.php:217
+msgid "Slider "
+msgstr "Carrusel"
+
+#: inc/customizer.php:177
+msgid "Colors"
+msgstr "Colores"
+
+#: inc/customizer.php:54
+msgid "Header Logo"
+msgstr "Logo De Cabecera"
+
+#: inc/customizer.php:172
+msgid "Background Image"
+msgstr "Imagen de fondo"
+
+#: inc/customizer.php:48
+msgid "Site Title & Tagline"
+msgstr "Título del sitio y descripción corta"
+
+#: inc/customizer.php:43
+msgid "Your theme supports a static front page."
+msgstr "Tu tema permite una página estática como portada."
+
+#: inc/customizer.php:41
+msgid "Static Front Page"
+msgstr "Portada estática"
+
+#: inc/customizer.php:34
+msgid "General Settings"
+msgstr "Ajustes Generales"
+
+#. Translators: If there are characters in your language that are not supported
+#. by Inconsolata, translate this to 'off'. Do not translate into your own
+#. language.
+#: functions.php:182
+msgctxt "Roboto Condensed font: on or off"
+msgid "on"
+msgstr "Activar"
+
+#. Translators: To add an additional character subset specific to your
+#. language, translate this to 'greek', 'cyrillic', 'devanagari' or
+#. 'vietnamese'. Do not translate into your own language.
+#: functions.php:190
+msgctxt "Add new subset (greek, cyrillic, devanagari, vietnamese)"
+msgid "no-subset"
+msgstr "sin derivada"
+
+#: functions.php:146
+msgid "About Footer"
+msgstr "Acerca De (Pie De Pagina)"
+
+#. Translators: If there are characters in your language that are not supported
+#. by Open Sans, translate this to 'off'. Do not translate into your own
+#. language.
+#: functions.php:174
+msgctxt "Open Sans font: on or off"
+msgid "on"
+msgstr "activa"
+
+#: functions.php:116
+msgid "Footer 2"
+msgstr "Pie De Pagina 2"
+
+#: functions.php:126
+msgid "Footer 3"
+msgstr "Pie De Pagina 3"
+
+#: functions.php:136
+msgid "Footer 4"
+msgstr "Pie De Pagina 4"
+
+#: functions.php:106
+msgid "Footer 1"
+msgstr "Pie De Pagina 1"
+
+#: functions.php:86
+msgid "Left Sidebar"
+msgstr "Barra lateral izquierda"
+
+#: functions.php:32
+msgid "Primary Menu"
+msgstr "Menú Primario"
+
+#: footer.php:62
+msgid "WordPress Theme"
+msgstr "Tema WordPress"
+
+#: footer.php:64
+msgid "%1$s by %2$s"
+msgstr "%1$s by %2$s"
+
+#: comments.php:82
+msgid "Comment"
+msgstr "Comentario"
+
+#: comments.php:76
+msgid "Website"
+msgstr "Sitio web"
+
+#: comments.php:72
+msgid "Email"
+msgstr "Email"
+
+#: comments.php:68
+msgid "Name"
+msgstr "Nombre"
+
+#: comments.php:57
+msgid "Comments are closed."
+msgstr "Comentarios cerrados."
+
+#: comments.php:37
+msgid "Newer Comments"
+msgstr "Comentarios más recientes"
+
+#: comments.php:36
+msgid "Older Comments"
+msgstr "Comentarios anteriores"
+
+#: comments.php:26
+msgctxt "comments title"
+msgid "One Comment"
+msgid_plural "%1$s Comments"
+msgstr[0] "Un Comentario"
+msgstr[1] "%1$s Comentarios"
+
+#: 404.php:12
+msgid "404 Error"
+msgstr "404 Error"
+
+#: 404.php:18
+msgid "Oops! That page can&rsquo;t be found."
+msgstr "¡Vaya! No se pudo encontrar esa página."
+
+#. Theme URI of the plugin/theme
+msgid "http://hashthemes.com/wordpress-theme/square/"
+msgstr "http://hashthemes.com/wordpress-theme/square/"
+
+#. Author of the plugin/theme
+msgid "HashThemes"
+msgstr "HashThemes"
+
+#. Author URI of the plugin/theme
+msgid "http://hashthemes.com"
+msgstr "http://hashthemes.com"

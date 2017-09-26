@@ -1,0 +1,215 @@
+.clearfix:after,
+.clearfix:before{
+  content: "";
+  display: table;
+}
+
+.clearfix:after{
+  clear: both;
+}
+
+.customize-control select{
+  width: 98%;
+}
+
+.square-accordion-section-title{
+    color: #0073aa;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    padding: 10px 10px 11px 14px;
+    line-height: 21px;
+    background: #FFF;
+    margin: 0 -12px 0;
+    border-left: 4px solid #0073aa
+}
+
+.customize-control-heading .customize-control-description{
+    margin: 5px 0 0;
+}
+
+.ht-implink{
+  background: #0073aa;
+  padding: 5px 10px;
+  color: #FFF !important;
+  text-align: center;
+  display: block;
+  margin-top: 5px;
+  line-height: 1.2;
+  box-shadow: none;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.ht-implink:hover{
+  background: #000;
+}
+
+/*GALLERY CONTROL*/
+.gallery-screenshot{
+  margin-bottom: 10px;
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.gallery-screenshot .screen-thumb{
+  width: 50%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding: 5px;
+  float: left;
+}
+
+.gallery-screenshot .screen-thumb img{ 
+  border: 1px solid #EEE;
+  vertical-align: middle;
+}
+
+#clear-gallery{
+  float: right;
+}
+
+/*CHOSEN*/
+.chosen-container-single .chosen-single {
+  border-radius: 0px;
+  height: 28px;
+  background: #FFF;
+  border-color: #DDDDDD;
+  line-height: 28px;
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.06);
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.06);
+}
+
+.chosen-container-single .chosen-single div b{
+    background-position: 0px 4px;
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single div b {
+  background-position: -18px 4px;
+}
+
+.chosen-container-multi .chosen-choices li{
+    float: none;
+}
+
+/*FontAwesome Icon Styles*/
+.square-type-icon{
+  overflow: hidden;
+}
+
+.square-selected-icon{
+  background: #F6F6F6;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  border: 1px solid #EEE;
+  position: relative;
+  margin-right: 45px;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.square-selected-icon .fa{
+  display: block;
+  line-height: 45px;
+}
+
+.square-selected-icon span{
+  position: absolute;
+  background: #F6F6F6;
+  right: -45px;
+  top: -1px;
+  height: 45px;
+  width: 45px;
+  border: 1px solid #EEE;
+  font-size: 20px;
+}
+
+.square-icon-list{
+  height: 215px;
+  overflow-y: scroll;
+  font-size: 18px;
+  border: 1px solid #EEE;
+  border-right: 0;
+  border-top: 0;
+  padding-bottom: 4%;
+  display: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.square-icon-list li{
+  float: left;
+  margin: 4% 3% 0;
+  height: 40px;
+  width: 16%;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #EEE;
+}
+
+.square-icon-list li:hover{
+  background: #333;
+  border: 1px solid #333;
+  color: #FFF;
+}
+
+.square-icon-list li.icon-active{
+  background: #0073aa;
+  border: 1px solid #0073aa;
+  color: #FFF;
+}
+
+/*Additional Styles*/
+.square-info{
+  margin-top: 10px;
+}
+
+.square-info a{
+  background: #0073aa;
+  padding: 5px 10px;
+  color: #FFF;
+  text-align: center;
+  display: block;
+  margin-top: 5px;
+  line-height: 1.2;
+  box-shadow: none;
+}
+
+.square-info a:hover{
+  background: #000;
+}
+
+.customize-pane-parent .control-section .accordion-section-title:before{
+    font-family: dashicons;
+    content: "\f103";
+    font-size: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+#accordion-panel-square_general_settings_panel .accordion-section-title:before{
+    content: "\f111";
+}
+
+#accordion-panel-square_home_settings_panel .accordion-section-title:before{
+    content: "\f102";
+}
+
+#accordion-panel-nav_menus .accordion-section-title:before{
+    content: "\f333";
+}
+
+#accordion-panel-widgets .accordion-section-title:before{
+    content: "\f116";
+}
+
+#accordion-panel-widgets .accordion-section-title:before{
+    content: "\f116";
+}
+
+#accordion-section-custom_css .accordion-section-title:before{
+    content: "\f499";
+}

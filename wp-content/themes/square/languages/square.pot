@@ -1,0 +1,559 @@
+# Loco Gettext template
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Square 1.0.0\n"
+"Report-Msgid-Bugs-To: http://hashthemes.com/\n"
+"POT-Creation-Date: 2015-06-12 21:51:31+0000\n"
+"POT-Revision-Date: Thu Jul 14 2016 22:42:45 GMT+0545 (Nepal Standard Time)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Hash Themes <hashthemes@gmail.com>\n"
+"Language-Team: English <hashthemes@gmail.com>\n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#: ../404.php:12
+msgid "404 Error"
+msgstr ""
+
+#: ../404.php:18
+msgid "Oops! That page can&rsquo;t be found."
+msgstr ""
+
+#: ../comments.php:26
+#, php-format
+msgctxt "comments title"
+msgid "One Comment"
+msgid_plural "%1$s Comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../comments.php:36
+msgid "Older Comments"
+msgstr ""
+
+#: ../comments.php:37
+msgid "Newer Comments"
+msgstr ""
+
+#: ../comments.php:57
+msgid "Comments are closed."
+msgstr ""
+
+#: ../comments.php:68
+msgid "Name"
+msgstr ""
+
+#: ../comments.php:72
+msgid "Email"
+msgstr ""
+
+#: ../comments.php:76
+msgid "Website"
+msgstr ""
+
+#: ../comments.php:82
+msgid "Comment"
+msgstr ""
+
+#: ../footer.php:62
+msgid "WordPress Theme"
+msgstr ""
+
+#: ../footer.php:64
+#, php-format
+msgid "%1$s by %2$s"
+msgstr ""
+
+#. Name of the template
+msgid "Home Page"
+msgstr ""
+
+#: ../front-page.php:23 ../inc/customizer.php:225 ../templates/home-template.php:14
+msgid "Free WordPress Themes"
+msgstr ""
+
+#: ../front-page.php:24 ../inc/customizer.php:244 ../templates/home-template.php:15
+msgid "Create website in no time"
+msgstr ""
+
+#: ../functions.php:32
+msgid "Primary Menu"
+msgstr ""
+
+#: ../functions.php:76
+msgid "Right Sidebar"
+msgstr ""
+
+#: ../functions.php:86
+msgid "Left Sidebar"
+msgstr ""
+
+#: ../functions.php:96
+msgid "Shop Sidebar"
+msgstr ""
+
+#: ../functions.php:106
+msgid "Footer 1"
+msgstr ""
+
+#: ../functions.php:116
+msgid "Footer 2"
+msgstr ""
+
+#: ../functions.php:126
+msgid "Footer 3"
+msgstr ""
+
+#: ../functions.php:136
+msgid "Footer 4"
+msgstr ""
+
+#: ../functions.php:146
+msgid "About Footer"
+msgstr ""
+
+#. Translators: If there are characters in your language that are not supported
+#. by Open Sans, translate this to 'off'. Do not translate into your own language.
+#: ../functions.php:174
+msgctxt "Open Sans font: on or off"
+msgid "on"
+msgstr ""
+
+#. Translators: If there are characters in your language that are not supported
+#. by Inconsolata, translate this to 'off'. Do not translate into your own language.
+#: ../functions.php:182
+msgctxt "Roboto Condensed font: on or off"
+msgid "on"
+msgstr ""
+
+#. Translators: To add an additional character subset specific to your language,
+#. translate this to 'greek', 'cyrillic', 'devanagari' or 'vietnamese'. Do not translate into your own language.
+#: ../functions.php:190
+msgctxt "Add new subset (greek, cyrillic, devanagari, vietnamese)"
+msgid "no-subset"
+msgstr ""
+
+#: ../search.php:11
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: ../inc/customizer.php:26
+msgid "White"
+msgstr ""
+
+#: ../inc/customizer.php:27
+msgid "Black"
+msgstr ""
+
+#: ../inc/customizer.php:34
+msgid "General Settings"
+msgstr ""
+
+#: ../inc/customizer.php:41
+msgid "Static Front Page"
+msgstr ""
+
+#: ../inc/customizer.php:43
+msgid "Your theme supports a static front page."
+msgstr ""
+
+#: ../inc/customizer.php:48
+msgid "Site Title & Tagline"
+msgstr ""
+
+#: ../inc/customizer.php:54
+msgid "Header Logo"
+msgstr ""
+
+#: ../inc/customizer.php:62 ../inc/customizer.php:84
+msgid "Header Background Color"
+msgstr ""
+
+#: ../inc/customizer.php:95 ../inc/customizer.php:113
+msgid "Page Header Banner"
+msgstr ""
+
+#: ../inc/customizer.php:116
+msgid "Recommended Image Size: 1800X400px"
+msgstr ""
+
+#: ../inc/customizer.php:125
+msgid "Blog Settings"
+msgstr ""
+
+#: ../inc/customizer.php:141
+msgid "Blog Content Format"
+msgstr ""
+
+#: ../inc/customizer.php:165
+msgid "Disable Share Buttons"
+msgstr ""
+
+#: ../inc/customizer.php:172
+msgid "Background Image"
+msgstr ""
+
+#: ../inc/customizer.php:177
+msgid "Colors"
+msgstr ""
+
+#: ../inc/customizer.php:185
+msgid "Home Page Settings"
+msgstr ""
+
+#: ../inc/customizer.php:194
+msgid "Slider Section"
+msgstr ""
+
+#: ../inc/customizer.php:217
+msgid "Slider "
+msgstr ""
+
+#: ../inc/customizer.php:237
+msgid "Caption Title"
+msgstr ""
+
+#: ../inc/customizer.php:256
+msgid "Caption SubTitle"
+msgstr ""
+
+#: ../inc/customizer.php:273
+msgid "Slider Image"
+msgstr ""
+
+#: ../inc/customizer.php:276
+msgid "Recommended Image Size: 1800X800px"
+msgstr ""
+
+#: ../inc/customizer.php:289
+msgid "Featured Section"
+msgstr ""
+
+#: ../inc/customizer.php:307
+msgid "Enable Read More link "
+msgstr ""
+
+#: ../inc/customizer.php:329
+msgid "Featured Page "
+msgstr ""
+
+#: ../inc/customizer.php:348 ../inc/customizer.php:438 ../inc/customizer.php:589
+msgid "Select a Page"
+msgstr ""
+
+#: ../inc/customizer.php:369 ../inc/customizer.php:569
+msgid "FontAwesome Icon"
+msgstr ""
+
+#: ../inc/customizer.php:381
+msgid "About Us Section"
+msgstr ""
+
+#: ../inc/customizer.php:399
+msgid "Disable About Section "
+msgstr ""
+
+#: ../inc/customizer.php:419
+msgid "About Page "
+msgstr ""
+
+#: ../inc/customizer.php:457
+msgid "About Page Stack Images"
+msgstr ""
+
+#: ../inc/customizer.php:477
+msgid "About Us Stack Image"
+msgstr ""
+
+#: ../inc/customizer.php:478
+msgid "Recommended Image Size: 400X420px"
+msgstr ""
+
+#: ../inc/customizer.php:488
+msgid "Tab Section"
+msgstr ""
+
+#: ../inc/customizer.php:506
+msgid "Disable Tab Section "
+msgstr ""
+
+#: ../inc/customizer.php:528
+msgid "Tab "
+msgstr ""
+
+#: ../inc/customizer.php:548
+msgid "Tab Title"
+msgstr ""
+
+#: ../inc/customizer.php:599
+msgid "Clients Logo Section"
+msgstr ""
+
+#: ../inc/customizer.php:617
+msgid "Disable Client Logo Section "
+msgstr ""
+
+#: ../inc/customizer.php:638
+msgid "Section Title & Logo"
+msgstr ""
+
+#: ../inc/customizer.php:658
+msgid "Title"
+msgstr ""
+
+#: ../inc/customizer.php:678
+msgid "Upload Clients Logos"
+msgstr ""
+
+#: ../inc/customizer.php:679
+msgid "Recommended Image Size: 220X90px"
+msgstr ""
+
+#: ../inc/customizer.php:688
+msgid "Footer Social Icons"
+msgstr ""
+
+#: ../inc/customizer.php:707
+msgid "Facebook"
+msgstr ""
+
+#: ../inc/customizer.php:726
+msgid "Twitter"
+msgstr ""
+
+#: ../inc/customizer.php:745
+msgid "Google Plus"
+msgstr ""
+
+#: ../inc/customizer.php:764
+msgid "Pinterest"
+msgstr ""
+
+#: ../inc/customizer.php:783
+msgid "Youtube"
+msgstr ""
+
+#: ../inc/customizer.php:802
+msgid "Linkedin"
+msgstr ""
+
+#: ../inc/customizer.php:821
+msgid "Instagram"
+msgstr ""
+
+#: ../inc/customizer.php:893
+msgid "Upload"
+msgstr ""
+
+#: ../inc/customizer.php:896
+msgid "Remove all images"
+msgstr ""
+
+#: ../inc/square-functions.php:73
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: ../inc/square-functions.php:75
+msgid "Edit"
+msgstr ""
+
+#. translators: 1: comment date, 2: comment time
+#: ../inc/square-functions.php:87
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: ../inc/square-metabox.php:16
+msgid "Sidebar Layout"
+msgstr ""
+
+#: ../inc/template-tags.php:28
+#, php-format
+msgctxt "post date"
+msgid "%s"
+msgstr ""
+
+#: ../inc/template-tags.php:33
+#, php-format
+msgctxt "post author"
+msgid "by %s"
+msgstr ""
+
+#: ../inc/template-tags.php:41
+msgid "No Comments"
+msgstr ""
+
+#: ../inc/template-tags.php:43
+msgid " Comments"
+msgstr ""
+
+#: ../inc/template-tags.php:45
+msgid "1 Comment"
+msgstr ""
+
+#: ../inc/template-tags.php:49
+msgid " Comment Closed"
+msgstr ""
+
+#. translators: used between list items, there is a space after the comma
+#: ../inc/template-tags.php:65 ../inc/template-tags.php:71
+msgid ", "
+msgstr ""
+
+#: ../inc/template-tags.php:67 ../inc/template-tags.php:73
+#, php-format
+msgid "%1$s"
+msgstr ""
+
+#: ../template-parts/content-none.php:12
+msgid "Nothing Found"
+msgstr ""
+
+#: ../template-parts/content-none.php:18
+#, php-format
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: ../template-parts/content-none.php:22
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: ../template-parts/content-none.php:27
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: ../template-parts/content-page.php:16 ../template-parts/content-single.php:20 .
+#: ./template-parts/content-summary.php:44 ../template-parts/content.php:40
+msgid "Pages:"
+msgstr ""
+
+#. translators: %s: Name of current post
+#: ../template-parts/content-page.php:27
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: ../template-parts/content-summary.php:39
+msgid "Read More"
+msgstr ""
+
+#: ../template-parts/content-summary.php:41 ../template-parts/content.php:35
+msgid "Continue reading &rarr;"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:49
+msgid "There are no reviews yet."
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:62
+msgid "Add a review"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:62
+#, php-format
+msgid "Be the first to review &ldquo;%s&rdquo;"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:63
+#, php-format
+msgid "Leave a Reply to %s"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:67
+msgid "Name*"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:68
+msgid "Email*"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:70
+msgid "Submit"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:76
+#, php-format
+msgid "You must be <a href=\"%s\">logged in</a> to post a review."
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:80
+msgid "Your Rating"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:81
+msgid "Rate&hellip;"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:82
+msgid "Perfect"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:83
+msgid "Good"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:84
+msgid "Average"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:85
+msgid "Not that bad"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:86
+msgid "Very Poor"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:90
+msgid "Your Review"
+msgstr ""
+
+#: ../woocommerce/single-product-reviews.php:99
+msgid "Only logged in customers who have purchased this product may leave a review."
+msgstr ""
+
+#. Name of the theme
+msgid "Square"
+msgstr ""
+
+#. Theme URI of the theme
+msgid "http://hashthemes.com/wordpress-theme/square/"
+msgstr ""
+
+#. Description of the theme
+msgid ""
+"Square is a flexible responsive multipurpose theme compatible with all "
+"browsers and devices, fully mobile friendly, loaded with lots of features. "
+"It is a minimal theme based on WordPress Customizer that allows you to "
+"customize with live preview. The theme can be used for business, corporate, "
+"digital agency, personal, portfolio, photography, parallax, blogs and "
+"magazines. Square is eCommerce (WooCommerce) Compatible, Polylang Compatible,"
+" WPML, RTL, Retina Ready, SEO Friendly and Support bbPress and BuddyPress. "
+"More over it is a complete theme. For demo http://demo.hashthemes.com/square"
+msgstr ""
+
+#. Author of the theme
+msgid "HashThemes"
+msgstr ""
+
+#. Author URI of the theme
+msgid "http://hashthemes.com"
+msgstr ""

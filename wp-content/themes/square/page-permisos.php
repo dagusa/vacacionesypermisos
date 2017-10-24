@@ -11,43 +11,13 @@ get_header(); ?>
 	if (isset($_POST['eliminar'])) {
 		eliminar_solicitud($_POST['folio_modal_eli']);
 	}
-	$solicitudes = $wpdb->get_results( "
-	 	SELECT 
-	 		s.id_solicitud,
-	 		s.id_user,
-	 		e.estado,
-	 		s.responsable,
-	 		s.dias_usados,
-	 		s.fecha,
-	 		s.autorizado,
-	 		s.tipo,
-	 		u.dias_vacaciones,
-	 		u.puesto,
-	 		a.nombre as area,
-	 		dep.nombre as departamento,
-	 		emp.razon_social
-	 	FROM 
-	 		solicitudes as s, 
-	 		users as u, 
-	 		areas AS a, 
-	 		departamentos AS dep, 
-	 		empresas AS emp, 
-	 		estados AS e
-	 	WHERE 
-	 		s.id_user=u.id_user 
-	 	AND dep.id_departamento=u.departamento 
-	 	AND a.id_area=dep.id_area 
-	 	AND emp.id_empresa=u.empresa_contratante 
-	 	AND u.estado=e.id_estado 
-	 	AND s.tipo='Vacaciones'
-	 	ORDER BY s.id_solicitud DESC;
-	");
+	$solicitudes = $wpdb->get_results( "SELECT * FROM solicitudes WHERE tipo='Permisos' ORDER BY id_solicitud DESC;");
 ?>
 <div class="sq-container sq-clearfix">
 	<br><br><br><br><br>
 	<div class="row ">
-		<h1 class="color_vallas text-center">Vacaciones</h1>
-	</div> 
+		<h1 class="color_vallas text-center">Permisos</h1>
+	</div>  
 	<?php if ($solicitudes) { ?>
 		<div class="row">
 			<div class="col-md-12">
@@ -58,42 +28,44 @@ get_header(); ?>
 								<th class="text-center">Empleado</th>
 								<th class="text-center">Folio</th>
 								<th class="text-center">Fecha</th>
-								<th class="text-center">Estado</th>
+								<th class="text-center">Ubicación</th>
 								<th class="text-center">Empresa</th>
 								<th class="text-center">Nombre</th>
 								<th class="text-center">Área</th>
 								<th class="text-center">Departamento</th>
 								<th class="text-center">Puesto</th>
-								<th class="text-center">Responsable</th>
+								<th class="text-center">Motivo de ausencia</th>
 								<th class="text-center">Días usados</th>
 								<th class="text-center"></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach ($solicitudes as $solicitud) { ?>
-								<?php $user_name = $wpdb->get_row("SELECT nombre,apellidos FROM users WHERE id_user='$solicitud->id_user'") ?>
 								<tr>
-									<td class="text-center"><p><small><?= $solicitud->id_user ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->id_solicitud ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->fecha ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->estado ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->razon_social ?></small></p></td>
-									<td class="text-center"><p><small><?= $user_name->nombre." ".$user_name->apellidos; ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->area ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->departamento ?></small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->puesto ?></small></p></td>
-									<td class="text-center"><p><small>
+									<?php 
+										$user=$wpdb->get_row("SELECT * FROM users WHERE id_user = $solicitud->id_user");
+										$razon_social=$wpdb->get_var("SELECT razon_social FROM empresas WHERE id_empresa=$user->empresa_contratante");
+										$lugar = $wpdb->get_row("SELECT a.nombre AS area, d.nombre AS departamento FROM areas AS a, departamentos AS d WHERE id_departamento=$user->departamento");
+										$motivo = $wpdb->get_var("SELECT nombre FROM motivo_permiso WHERE id_motivo=$solicitud->id_motivo");
+									?>
+									<td class="text-center"><?= $solicitud->id_user ?></td>
+									<td class="text-center"><?= $solicitud->id_solicitud ?></td>
+									<td class="text-center"><?= $solicitud->fecha ?></td>
+									<td class="text-center"><?= $user->ubicacion ?></td>
+									<td class="text-center"><?= $razon_social ?></td>
+									<td class="text-center"><?= $user->nombre." ".$user->apellidos; ?></td>
+									<td class="text-center"><?= $lugar->area ?></td>
+									<td class="text-center"><?= $lugar->departamento ?></td>
+									<td class="text-center"><?= $user->puesto ?></td>
+									<td class="text-center">
 										<?php 
-											$responsable = $wpdb->get_row("SELECT nombre,apellidos FROM users WHERE id_user='$solicitud->responsable'");
-											if ($responsable) {
-												echo $responsable->nombre." ".$responsable->apellidos; 
-											}else{
-                                                echo "Solicitud no terminada";
-                                            }
-										?>
-											
-									</small></p></td>
-									<td class="text-center"><p><small><?= $solicitud->dias_usados ?></small></p></td>
+											if ($motivo) {
+											 	echo $motivo;
+											 } else{
+											 	echo "Solicitud no terminada";
+											 }
+										?></td>
+									<td class="text-center"><?= $solicitud->dias_usados ?></td>
 									<td class="text-center">
 										<div class="btn-group">
 											<?php if($solicitud->autorizado == 1){ ?>

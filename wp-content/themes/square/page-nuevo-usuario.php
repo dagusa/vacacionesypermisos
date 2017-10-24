@@ -6,8 +6,8 @@
     }
     global $wpdb;
     $paises = $wpdb->get_results('SELECT * FROM paises ORDER BY nombre');
-    $departamentos = $wpdb->get_results('SELECT * FROM departamentos ORDER BY nombre');
-    $usuarios = $wpdb->get_results( "SELECT w.ID AS id_user,u.departamento AS departamento,u.area AS area FROM wp_users AS w, users AS u WHERE w.ID=u.id_user");
+    $areas = $wpdb->get_results('SELECT * FROM areas ORDER BY nombre');
+    $usuarios = $wpdb->get_results( "SELECT w.ID AS id_user, u.departamento AS departamento FROM wp_users AS w, users AS u WHERE w.user_login=u.id_user ORDER BY nombre");
     $empresas = $wpdb->get_results("SELECT * FROM empresas");
 ?>
 <div class="container">
@@ -35,26 +35,44 @@
                 <br>
                 <div class="input-group">
                     <span class="input-group-addon glyphicon glyphicon-envelope"> Correo:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <input type="email" class="form-control" name="email" required placeholder="user@gpovallas.com">
+                    <input type="email" class="form-control" name="email"  placeholder="user@gpovallas.com">
                 </div>
                 <br>
                 <div class="input-group">
-                    <span class="input-group-addon glyphicon glyphicon-home"> Departamento:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <select class="form-control" name="dep" onchange="change_departamento(this.value);" required>
-                         <option value="">Selecciona un departamento</option>
-                        <?php foreach ($departamentos as $departamento) { ?>
-                            <option class="text-center" value="<?= $departamento->id_departamento ?>"><?= $departamento->nombre ?></option>
+                    <span class="input-group-addon glyphicon glyphicon-home"> Área:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <select class="form-control" name="area" onchange="change_areas(this.value);" required>
+                         <option value="">Selecciona un area</option>
+                        <?php foreach ($areas as $area) { ?>
+                            <option class="text-center" value="<?= $area->id_area ?>"><?= $area->nombre ?></option>
                         <?php } ?>
                     </select>
                 </div>
                 <br>
                 <div class="input-group">
-                    <span class="input-group-addon glyphicon glyphicon-home"> Área:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <select class="form-control" id="select_area" name="area" onchange="change_area(this.value);" required>
-                        <option value="">Selecciona área</option>
+                    <span class="input-group-addon glyphicon glyphicon-home"> Departamento:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <select class="form-control" id="select_departamento" name="departamento" required>
+                        <option value="">Selecciona un departamento</option>
                     </select>
                 </div>
-                <br>
+                <br>   
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-user"> Puesto:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" class="form-control" name="puesto" required placeholder="puesto">
+                </div>
+                <br>  
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-user"> Responsable de área:</span>
+                    <select class="form-control" id="select_resp" name="resp">
+                        <option class="text-center" value="">Selecciona un responsable de área</option>
+                        <?php foreach ($usuarios as $usuario) { ?>
+                            <?php $user_info = get_userdata($usuario->id_user); ?>
+                            <option value="<?= $usuario->id_user ?>"><?= $user_info->first_name." ".$user_info->last_name ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <br> 
+            </div>
+            <div class="col-md-6 col-lg-6 col-xm-12">  
                 <div class="input-group">
                     <span class="input-group-addon glyphicon glyphicon-user"> Jefe inmediato:&nbsp;&nbsp;&nbsp;</span>
                     <select class="form-control" id="select_jefe" name="jefe">
@@ -65,9 +83,7 @@
                         <?php } ?>
                     </select>
                 </div>
-                <br>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xm-12">
+                <br> 
                 <div class="input-group">
                     <span class="input-group-addon glyphicon glyphicon-map-marker"> País:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <select class="form-control" name="pais" onchange="change_pais(this.value);" required>
@@ -102,7 +118,7 @@
                 <br>
                 <div class="input-group">
                     <span class="input-group-addon glyphicon glyphicon-calendar"> Fecha de ingreso:&nbsp;&nbsp;</span>
-                    <input type="date" class="form-control" name="ingr" required placeholder="Selecciona una fecha">
+                    <input type="date" class="form-control" name="ingr" placeholder="Selecciona una fecha">
                 </div>
                 <br> 
                 <div class="input-group">
@@ -134,20 +150,18 @@
             document.getElementById('select_estado').innerHTML = option_estado;
         });
     }
-    function change_departamento(id_departamento){
+    function change_areas(id_area){
         var data_eventos={
-            'action':'obtener_areas',
-            'id_departamento':id_departamento
+            'action':'obtener_departamentos',
+            'id_area':id_area
         };
-            console.log(id_departamento);
-
         jQuery.post(ajaxurl,data_eventos,function(response){
             datos = JSON.parse(response);
-            var option_area = "<option value=''>Selecciona área</option>";                        
+            var option_area = "<option value=''>Selecciona un departamento</option>";                        
             for (i=0;i<datos.length;i++){
-                option_area = option_area + "<option value='"+datos[i]['id_area']+"'>"+datos[i]['nombre']+"</option>";
+                option_area = option_area + "<option value='"+datos[i]['id_departamento']+"'>"+datos[i]['nombre']+"</option>";
             }
-            document.getElementById('select_area').innerHTML = option_area;
+            document.getElementById('select_departamento').innerHTML = option_area;
         });
     }
 </script>

@@ -1,15 +1,8 @@
 <?php
-    //get_header(); 
-	//obtener folio 
 	$folio=$_GET['folio'];
-	$user = $wpdb->get_var("SELECT id_user FROM solicitudes WHERE id_solicitud='$folio'");
-    $cu = get_userdata($user); //wp_get_current_user();
-    $cu_u = $wpdb->get_row( "SELECT * FROM users WHERE id_user = '$cu->ID'" );
-    $solicitud = $wpdb->get_row( "SELECT * FROM solicitudes WHERE id_solicitud = '$folio'" ); //$solicitud->id_responsable
+    $solicitud = $wpdb->get_row( "SELECT * FROM solicitudes WHERE id_solicitud = '$folio'" );
+    $cu_u = $wpdb->get_row( "SELECT * FROM users WHERE id_user = '$solicitud->id_user'" );
     $eventos = $wpdb->get_results( "SELECT * FROM eventos WHERE id_solicitud = '$folio'");
-    $user_info = 
-	$nombre = $user_info->first_name;
-	$apellidos = $user_info->last_name;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -30,8 +23,7 @@
 						<th class="text-left">
 							<img width="150" height="50" src="<?= wp_upload_dir()['baseurl'].'/logo_vallas.png' ?>"></th>
 						<th class="text-center">
-							<br><br>
-							<h2>SOLICITUD DE VACACIONES</h2>
+							<h4>SOLICITUD DE VACACIONES</h4>
 						</th>
 						<th class="text-right">
 							<?php if ($cu_u->empresa_contratante == 1) { ?>
@@ -53,89 +45,95 @@
 					</tr>
 				</table>
 			</div>
-			<div class="row">
+			<div class="row"><small>
 				<p>INSTUCCIONES: Solicita las firmas correspondientes, envía escaneado y entrega el original a Capital Humano (Solo si tienes cuenta de correo). Configura la respuesta automatica de tu correo electrónico a "Fuera de oficina" indicando los nombres de los responsables en tu ausencia.</p>
-			</div>
+			</small></div>
 			<div class="row">
-				<h4>DATOS GENERALES:</h4>
-				<h5>&nbsp;&nbsp;<span class="glyphicon glyphicon-user"></span> Nombre: <?= $cu->user_firstname.' '.$cu->user_lastname ?></h5>
-				<h5>&nbsp;&nbsp;<span class="glyphicon glyphicon-home"></span> Departamento: <?= $wpdb->get_var("SELECT nombre FROM departamentos WHERE id_departamento='$cu_u->departamento'"); ?></h5>
-				<h5>&nbsp;&nbsp;<span class="glyphicon glyphicon-map-marker"></span> Ubicación: <?= $cu_u->ubicacion ?></h5>
-				<h5>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> Fecha de ingreso: <?= $cu_u->fecha_ingreso ?></h5>
-				<h5 id="ant"></h5>
-				<h5>&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span> Empresa contratante: <?= $wpdb->get_var("SELECT razon_social FROM empresas WHERE id_empresa='$cu_u->empresa_contratante'") ?></h5>
+				<h5>DATOS GENERALES:</h5>
+				<p>&nbsp;&nbsp;<span class="glyphicon glyphicon-user"></span> Nombre: <?= $cu_u->nombre.' '.$cu_u->apellidos ?></hp>
+				<p>&nbsp;&nbsp;<span class="glyphicon glyphicon-home"></span> Departamento: <?= $wpdb->get_var("SELECT nombre FROM departamentos WHERE id_departamento='$cu_u->departamento'"); ?></p>
+				<p>&nbsp;&nbsp;<span class="glyphicon glyphicon-map-marker"></span> Ubicación: <?= $cu_u->ubicacion ?></p>
+				<p>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> Fecha de ingreso: <?= $cu_u->fecha_ingreso ?></p>
+				<p id="ant"></p>
+				<p>&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span> Empresa contratante: <?= $wpdb->get_var("SELECT razon_social FROM empresas WHERE id_empresa='$cu_u->empresa_contratante'") ?></p>
 			</div>
-			<div class="row">
+			<div class="row"><small>
 				<p>Solicito atentamente se autoricen los sigueintes días que pretendo disfrutar a cuenta de mi saldo vacacional vigente:</p>
-			</div>
+			</small></div>
 			<div class="row">
-				<h4>DÍAS DE VACACIONES VIGENTES</h4>
+				<h5>DÍAS DE VACACIONES VIGENTES</h5>
 				<table class="table table-bordered">
 					<tr>
-						<th>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> DÍAS DISPONIBLES:</th>
-						<td  class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $cu_u->dias_vacaciones ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<th><p>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> Días disponibles:</p></th>
+						<td  class="text-center"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $cu_u->dias_vacaciones ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
 					</tr>
 					<tr>
-						<th>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> DÍAS A DISFRUTAR:</th>
-						<td class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $solicitud->dias_usados ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<th><p>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> Dias a disfrutar:</p></th>
+						<td class="text-center"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $solicitud->dias_usados ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
 					</tr>
 					<tr>
-						<th>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> SALDO DEL PERIODO:</th>
-						<td class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $cu_u->dias_vacaciones-$solicitud->dias_usados ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<th><p>&nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span> Saldo del periodo:</p></th>
+						<td class="text-center"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $cu_u->dias_vacaciones-$solicitud->dias_usados ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
 					</tr>
 				</table>
 			</div>
 			<div class="row">
-				<h4>DÍAS A DISFRUTAR</h4>			
+				<h5>DÍAS A DISFRUTAR</h5>			
 			</div>
 			<div class="row">
 	            <table class="table table-bordered">
 	                <tr>
-	                    <th ><center><h5>DÍAS</h5></center></th>
-	                    <th ><center><h5>DEL</h5></center></th>
-	                    <th ><center><h5>AL</h5></center></th>
+	                    <th class="text-center"><p>DÍAS</p></th>
+	                    <th class="text-center"><p>DEL</p></th>
+	                    <th class="text-center"><p>AL</p></th>
 	                </tr>
 	                <?php foreach ($eventos as $evento) { ?>
 	                    <tr>
-	                        <td ><center><?= $evento->dias;?></center></td>
-	                        <td ><center><?= $evento->inicio;?></center></td>
-	                        <td ><center><?= $evento->fin;?></center></td>
+	                        <td class="text-center"><p><?= $evento->dias;?></p></td>
+	                        <td class="text-center"><p><?= $evento->inicio;?></p></td>
+	                        <td class="text-center"><p><?= $evento->fin;?></p></td>
 	                    </tr>
 	                <?php } ?>
 	            </table>
 	        </div>
 	        <div class="row">
-	        	<h4>RESPONSABLE EN MI AUSENCIA</h4>
-	        	<?php $user_info = get_userdata($solicitud->responsable); ?>
-	        	<input type="text" class="form-control text-center" value="<?=  $user_info->first_name." ".$user_info->last_name ?>">	        	
+	        	<h5>RESPONSABLE EN MI AUSENCIA</h5>
+	        	<?php $responsable = $wpdb->get_row("SELECT nombre,apellidos FROM users WHERE id_user = '$solicitud->responsable'"); ?>
+	        	<input type="text" class="form-control text-center" value="<?=  $responsable->nombre." ".$responsable->apellidos ?>">	        	
 	        </div>
 	        <br>
 	        <div class="row">
 	        	<table class="table table-bordered">
 	        		<thead>
 		                <tr>
-		                    <th class=""><center><h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SOLICITANTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h5></center></th>
-		                    <th class=""><center><h5>VO. BO. RESPONSABLE DE ÁREA</h5></center></th>
-		                    <th class=""><center><h5>VO. BO. CAPITAL HUMANO</h5></center></th>
+		                    <th class=""><center><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SOLICITANTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></center></th>
+		                    <th class=""><center><p>VO. BO. RESPONSABLE DE ÁREA</p></center></th>
+		                    <th class=""><center><p>VO. BO. CAPITAL HUMANO</p></center></th>
 		                </tr>
 	                </thead>
 	                <tbody>
 		                <tr>
-		                    <td class=" text-center"><br><br><br><br>Firma <br></td>
-		                    <td class=" text-center"><br><br><br><br>Firma <br></td>
-		                    <td class=" text-center"><br><br><br><br>firma <br></td>
+		                    <td class=" text-center"><br><br>Firma <br></td>
+		                    <td class=" text-center"><br><br>Firma <br></td>
+		                    <td class=" text-center"><br><br>firma <br></td>
 		                </tr>
 		                <tr>
-		                    <td class=""><center><?= $cu->user_firstname.' '.$cu->user_lastname ?></center></td>
-		                    <td class=""><center></center></td>
-		                    <td class=""><center></center></td>
+		                    <td class="text-center"><?= $cu_u->nombre.' '.$cu_u->apellidos ?></td>
+				        	<?php $resp_area = get_userdata($cu_u->responsable_area); ?>
+		                    <td class="text-center">
+		                    	<?php  
+		                    		if ($resp_area) {
+		                    			echo $resp_area->first_name." ".$resp_area->last_name;
+		                    		}
+		                    	?>	
+		                    </td>
+		                    <td></td>
 		                </tr>
 	                </tbody>
-	            </table>
-	        	
+	            </table>	        	
 	        </div>
 	        <br>
-	        <div class="row">
+	        <div class="row"><small>
 	        	<p>
 	        	Este documento no será válido en caso de presentar enmendaduras o tachaduras. <br>
 	        	En caso de requerir modificación o cancelación de los días dolicitados deberás dar aviso en un tiempo no mayor a 5 días. <br>
@@ -143,8 +141,7 @@
 	        	</p>
 	        	<br>
 	        	<p class="text-right">Información confidencial de uso interno</p>
-	        </div>
-			<br>
+	        </small></div>
 		</div>
 		
 	</body>

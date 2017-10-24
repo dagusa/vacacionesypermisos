@@ -1,4 +1,33 @@
 <?php
+function solicitar_vacaciones(){
+	global $wpdb; 
+	$folio=$_POST['folio'];
+    $dias_selec=$_POST['dias_selec'];
+    $dias_restantes=$_POST['dias_restantes'];
+    $responsable=$_POST['resp'];
+    $update=$wpdb->update(
+        "solicitudes",
+        ['responsable'=>$responsable, 'dias_usados'=>$dias_selec],
+        ['id_solicitud'=>$folio],
+        ['%s','%d'],
+        ['%d']
+    );
+    echo "<script>window.open('pdf?folio=".$folio."', 'Formato de impresión')</script>";
+}
+function solicitar_permiso(){
+	global $wpdb; 
+	$folio=$_POST['folio_permiso'];
+    $dias_selec=$_POST['dias_selec_permiso'];
+    $motivo=$_POST['motivo'];
+    $update=$wpdb->update(
+        "solicitudes",
+        ['id_motivo'=>$motivo, 'dias_usados'=>$dias_selec],
+        ['id_solicitud'=>$folio],
+        ['%s','%d'],
+        ['%d']
+    );
+    echo "<script>window.open('pdf_permisos?folio=".$folio."', 'Formato de impresión')</script>";
+}
 //Page usuarios
 
 function actualizar_usuario(){
@@ -9,38 +38,62 @@ function actualizar_usuario(){
 	$correo 		= isset($_POST['correo_modal_editar'])  	? $_POST['correo_modal_editar']   		: "";
 
 	$departamento 	= isset($_POST['departamento_modal_editar']) ? $_POST['departamento_modal_editar'] 	: "";
-	$area 			= isset($_POST['area_modal_editar']) 		? $_POST['area_modal_editar'] 			: "";
+	$resp 			= isset($_POST['resp_modal_editar']) 		? $_POST['resp_modal_editar'] 			: "";
 	$jefe 			= isset($_POST['jefe_modal_editar']) 		? $_POST['jefe_modal_editar'] 			: "";
-	$pais 			= isset($_POST['pais_modal_editar']) 		? $_POST['pasi_modal_editar'] 			: "";
+	$pais 			= isset($_POST['pais_modal_editar']) 		? $_POST['pais_modal_editar'] 			: "";
 	$estado 		= isset($_POST['estado_modal_editar']) 		? $_POST['estado_modal_editar'] 		: "";
 	$ubicacion 		= isset($_POST['ubicacion_modal_editar']) 	? $_POST['ubicacion_modal_editar'] 		: "";
 	$empresa 		= isset($_POST['empresa_modal_editar']) 	? $_POST['empresa_modal_editar'] 		: "";
 	$fecha 			= isset($_POST['fecha_modal_editar']) 		? $_POST['fecha_modal_editar'] 			: "";
-	$dias 			= isset($_POST['dias_modal_editar']) 		? $_POST['dias_modal_editar'] 			: "";
+	$dias 			= isset($_POST['dias_modal_editar']) 		? $_POST['dias_modal_editar'] 			: 0;
+	$comentario		= isset($_POST['comentario_modal_editar']) 	? $_POST['comentario_modal_editar'] 	: "";
 
 	$user_data 		= wp_update_user( array( 'ID' => $id, 'first_name' => $nombre, 'last_name' => $apellidos, 'user_email' => $correo ) );
  	$update 		= $wpdb->update(
 		'users',
 		[
 			'departamento' 			=> $departamento, 
-			'area' 					=> $area,
+			'nombre'				=> $nombre,
+			'apellidos'				=> $apellidos,
+		    "responsable_area"		=> $resp,			
 			'jefe' 					=> $jefe,
 			'estado'				=> $estado,
 			'ubicacion'				=> $ubicacion,
-			'empresa_contratante'	=>$empresa,
+			'empresa_contratante'	=> $empresa,
 			'fecha_ingreso' 		=> $fecha,
-			'dias_vacaciones' 		=>$dias
+			'dias_vacaciones' 		=> $dias,
+			'comentario' 			=> $comentario
 		],
 		['id_user'=>$id],
-		['%s','%s','%d','%d','%s','%s','%s','%d'],
+		['%s','%s','%s','%d','%d','%d','%s','%s','%s','%d','%s'],
 		['%d']
 	);
+	var_dump($update);
 	if ($update ) {
 	   echo "<script>swal('Actualizado!', 'Disfruta tus vacaciones!', 'success'); </script>";
 	}else{
 		echo "<script>swal('¡Error!', 'No se ha podido editar el usuario', 'error');  </script>";
 	}
 }
+/*function hola(){
+	global $wpdb;
+	$users = $wpdb->get_results("SELECT id_user FROM users");
+	foreach ($users as $user) {
+		$user_info = get_userdata($user->id_user); 
+		$update 		= $wpdb->update(
+			'users',
+			[
+				'id_user' 			=> $user_info->ID
+			],
+			['id_user'=>$user->user_login],
+			['%d'],
+			['%d']
+		);
+		echo $user_info->first_name;
+		echo "<br>";
+		echo $update;
+	}
+}*/
 function eliminar_usuario($id_user){
 	global $wpdb; 
 	require_once(ABSPATH.'wp-admin/includes/user.php' );
@@ -69,7 +122,7 @@ function dias_vacaciones($fecha){
 		return 8;
 	}elseif ($años == 3) {
 		return 10;
-	}elseif($años == 4){
+	}elseif ($años == 4){
 		return 12;
 	}elseif ($años >= 5 && $años <= 9){
 		return 14;
@@ -80,6 +133,7 @@ function dias_vacaciones($fecha){
 	}
 	return 0;
 }
+
 function nuevo_usuario(){
 	global $wpdb; 
 	$user 		=	isset($_POST['user']) 		?	$_POST['user']		: "";
@@ -88,15 +142,18 @@ function nuevo_usuario(){
 	$pass 		=	isset($_POST['pass'])		?	$_POST['pass']		: "";
 	$email 		=	isset($_POST['email'])		?	$_POST['email']		: "";
 
-	$dep 		= 	isset($_POST['dep'])		? 	$_POST['dep']		: "";
-	$area 		= 	isset($_POST['area'])		?	$_POST['area']		: "";
-	$jefe 		= 	isset($_POST['jefe'])		?	$_POST['jefe']		: "";
-	$estado 	= 	isset($_POST['estado'])		?	$_POST['estado']	: "";
-	$ubi 		= 	isset($_POST['ubi'])		?	$_POST['ubi']		: "";
-	$empresa	=	isset($_POST['empresa'])	?	$_POST['empresa']	: "";
-	$ingr 		= 	isset($_POST['ingr'])		?	$_POST['ingr']		: "";
+	$dep 		= 	isset($_POST['departamento'])		? 	$_POST['departamento']		: "";
+	$jefe 		= 	isset($_POST['jefe'])				?	$_POST['jefe']				: "";
+	$resp 		= 	isset($_POST['resp'])				?	$_POST['resp']				: "";
+	$puesto 	= 	isset($_POST['puesto'])				?	$_POST['puesto']			: "";
+	$estado 	= 	isset($_POST['estado'])				?	$_POST['estado']			: "";
+	$ubi 		= 	isset($_POST['ubi'])				?	$_POST['ubi']				: "";
+	$empresa	=	isset($_POST['empresa'])			?	$_POST['empresa']			: "";
+	$ingr 		= 	isset($_POST['ingr'])				?	$_POST['ingr']				: "";
 	$datos = array(
         "user_login"	=> $user,
+        "nombre"		=> $nombre,
+        "apellidos"		=> $apellidos,
         "user_pass"		=> $pass,
         "user_email"	=> $email,
         "display_name"	=> $user,
@@ -109,9 +166,12 @@ function nuevo_usuario(){
         $insert = $wpdb->insert(
         	'users',
         	array(
-		    	"id_user"				=> $user_id,
+		    	"id_user"				=> $user,
+        		"nombre"				=> $nombre,
+        		"apellidos"				=> $apellidos,
 		    	"departamento"			=> $dep,
-		    	"area"					=> $area,
+		    	"puesto"				=> $puesto,
+		    	"responsable_area"		=> $resp,
 		    	"jefe"					=> $jefe,
 		    	"estado"				=> $estado,
 		    	"ubicacion"				=> $ubi,
@@ -123,6 +183,9 @@ function nuevo_usuario(){
 		    	'%d',
 		    	'%s',
 		    	'%s',
+		    	'%s',
+		    	'%s',
+		    	'%d',
 		    	'%d',
 		    	'%d',
 		    	'%s',
@@ -163,16 +226,29 @@ function confirmar_solicitud($folio){
 			['%d']
 		);
 		if ($update1 && $update2) {
-			echo "<script>swal('Actualizado!', 'Disfruta tus vacaciones!', 'success'); </script>";
+			echo "<script>swal('Aprobada!', 'Solicitud de vacaciones aprobada!', 'success'); </script>";
 		}else{
 			echo "<script>swal('¡Error!', 'No se ha podido confirmar la solicitud', 'error');  </script>";
 		}
 	}else{
 		echo "<script>swal('¡Error!', 'Los días con los que dispone el usuario no son suficientes para esta solicitud!', 'error');  </script>";
-	}
-	
+	}	
 }
-
+function confirmar_solicitud_permiso($folio){
+	global $wpdb; 
+	$update=$wpdb->update(
+		'solicitudes',
+		['autorizado'=>'1'],
+		['id_solicitud'=>$folio],
+		['%d'],
+		['%d']
+	);
+	if ($update) {
+		echo "<script>swal('Aprobada!', 'Solicitud de permiso aprobada!', 'success'); </script>";
+	}else{
+		echo "<script>swal('¡Error!', 'No se ha podido confirmar la solicitud', 'error');  </script>";
+	}	
+}
 function eliminar_solicitud($folio){
 	global $wpdb; 
 	$delete_folio=$wpdb->delete(
@@ -191,13 +267,13 @@ function eliminar_solicitud($folio){
 		echo "<script>swal('¡Error!', 'No se ha podido eliminar la solicitud', 'error');  </script>";
 	}
 }
-//ajax obtener areas
-add_action( 'wp_ajax_obtener_areas', 'obtener_areas' );
-add_action( 'wp_ajax_nopriv_obtener_areas', 'obtener_areas' );
-function obtener_areas() {
+//ajax obtener departamentos
+add_action( 'wp_ajax_obtener_departamentos', 'obtener_departamentos' );
+add_action( 'wp_ajax_nopriv_obtener_departamentos', 'obtener_departamentos' );
+function obtener_departamentos() {
 	global $wpdb;
-	$id_departamento = isset($_POST['id_departamento']) ? $_POST['id_departamento'] : "";	
-	$datos = $wpdb->get_results("SELECT id_area,nombre FROM areas WHERE id_departamento='$id_departamento' ORDER BY nombre");
+	$id_area = isset($_POST['id_area']) ? $_POST['id_area'] : "";	
+	$datos = $wpdb->get_results("SELECT id_departamento,nombre FROM departamentos WHERE id_area='$id_area' ORDER BY nombre");
    	echo json_encode($datos);
 	wp_die();
 }
@@ -229,13 +305,14 @@ add_action( 'wp_ajax_nuevo_folio', 'nuevo_folio' );
 add_action( 'wp_ajax_nopriv_nuevo_folio', 'nuevo_folio' );
 function nuevo_folio() {
 	global $wpdb; 
-	$id_solicitud = intval($_POST['id_usuario']);
-	$nuso=$wpdb->insert('solicitudes', ['id_user' => $id_solicitud], ['%d']);
+	$id_user = intval($_POST['id_user']);
+	$tipo = $_POST['tipo'];
+	$nuso=$wpdb->insert('solicitudes', ['id_user' => $id_user,'tipo' => $tipo], ['%d','%s']);
 	if ($nuso) {
-		echo ($wpdb->get_var("SELECT max(id_solicitud) FROM solicitudes WHERE id_user=$id_solicitud"));
+		echo ($wpdb->get_var("SELECT max(id_solicitud) FROM solicitudes WHERE id_user=$id_user"));
+	}else{
+		echo ("Error");
 	}
-	
-	//$insert=$wpdb->query("INSERT INTO eventos VALUES ('','$id_solicitud','$start','$end',$dias)");
 	wp_die();
 }
 add_action( 'wp_ajax_nuevo_evento', 'nuevo_evento' );
@@ -247,15 +324,20 @@ function nuevo_evento() {
 	$end = $_POST['end'];
 	$dias = intval($_POST['dias']);
 	$insert=$wpdb->query("INSERT INTO eventos VALUES ('',$id_solicitud,'$start','$end',$dias)");	
+	echo $insert;
 	wp_die();
 }
 add_action( 'wp_ajax_obtener_eventos', 'obtener_eventos' );
-add_action( 'wp_ajax_nopriv_obtener_eventos', 'obtener_eventos' );
+add_action( 'wp_ajax_nopriv_obtener_eventos', 'obtener_eventos');
 function obtener_eventos() {
 	global $wpdb;
-	$id_solicitud = $_POST['id_solicitud'];	
+	$id_solicitud = isset($_POST['id_solicitud']) ?	$_POST['id_solicitud'] : "";
 	$datos = $wpdb->get_results("SELECT * FROM eventos WHERE id_solicitud='$id_solicitud'");
-   	echo json_encode($datos);
+   	if(!is_null($datos )){
+   		echo json_encode($datos);
+   	}else{
+   		echo json_encode(Array());
+   	}	
 	wp_die();
 }
 if ( ! function_exists( 'square_setup' ) ) :

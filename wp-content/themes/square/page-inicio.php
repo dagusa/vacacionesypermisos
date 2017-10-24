@@ -1,29 +1,30 @@
 <?php
     get_header(); 
     if (isset($_POST['enviar'])) {
-        $folio=$_POST['folio'];
-        $dias_selec=$_POST['dias_selec'];
-        $dias_restantes=$_POST['dias_restantes'];
-        $responsable=$_POST['resp'];
-        $update=$wpdb->update(
-            "solicitudes",
-            ['responsable'=>$responsable, 'dias_usados'=>$dias_selec],
-            ['id_solicitud'=>$folio],
-            ['%s','%d'],
-            ['%d']
-        );
-        echo "<script>window.open('pdf?folio=".$folio."', 'Formato de impresión')</script>";;
+        solicitar_vacaciones();
     }    
+    if(isset($_POST['solicitar_permiso'])){
+        solicitar_permiso();
+    }
     $cu = wp_get_current_user();
-    $cu_u = $wpdb->get_row( "SELECT * FROM users WHERE id_user = '$cu->ID'" );
-    $responsables = $wpdb->get_results("SELECT id_user FROM users WHERE departamento = '$cu_u->departamento' ");
-    $solicitudes = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->ID' ORDER BY id_solicitud DESC");
-    $boton_solicitud = false;
+    $cu_u = $wpdb->get_row( "SELECT * FROM users WHERE id_user = '$cu->user_login'" );
+    $area = $wpdb->get_var("SELECT id_area FROM departamentos WHERE id_departamento = $cu_u->departamento");
+    $responsables = $wpdb->get_results("SELECT u.id_user,u.nombre,u.apellidos FROM users AS u, departamentos AS d WHERE d.id_area = '$area' AND d.id_departamento = u.departamento AND u.id_user <> '$cu->user_login';");
+    $solicitudes = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->user_login' ORDER BY id_solicitud DESC");
+    $solicitudes_vacaciones = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->user_login' AND tipo = 'Vacaciones' ORDER BY id_solicitud DESC");
+    $solicitudes_permisos = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->user_login' AND tipo = 'Permisos' ORDER BY id_solicitud DESC");
+    $boton_solicitud_vacaciones = false;
+    $boton_solicitud_permisos = false;
     $estado = $wpdb->get_row("SELECT * FROM estados WHERE id_estado='$cu_u->estado'");
     $pais = $wpdb->get_var("SELECT nombre FROM paises WHERE  id='$estado->id_pais'");
+    $permiso_ley = $wpdb->get_results("SELECT * FROM motivo_permiso WHERE tipo='ley'");
+    $permiso_extraordinario = $wpdb->get_results("SELECT * FROM motivo_permiso WHERE tipo='extraordinario'");
     foreach ($solicitudes as $solicitud) {
-        if ($solicitud->autorizado==0) {
-            $boton_solicitud = true;
+        if ($solicitud->autorizado==0 and $solicitud->tipo == 'Vacaciones') {
+            $boton_solicitud_vacaciones = true;
+        }
+        if ($solicitud->autorizado==0 and $solicitud->tipo == 'Permisos') {
+            $boton_solicitud_permisos = true;
         }
     }
 ?>
@@ -41,19 +42,18 @@
 <div class="container">
 	<br><br><br><br>
 	<div class="row">
-		<h1 class="color_vallas text-center">Solicitud de vacaciones</h1>
+		<h1 class="color_vallas text-center">Mis datos</h1>
 	</div> 
     <br>   
     <div class="row">
         <div class="col-md-6 col-lg-6 col-xm-6">
             <div class="input-group">
                 <span class="input-group-addon "><span class="glyphicon glyphicon-folder-open"></span> Numero de empleado:</span>
-                <input type="text" class="form-control  text-center" readonly value="<?= $cu->user_login ?>">
+                <input id="id_usuario" type="text" class="form-control  text-center" readonly value="<?= $cu->user_login ?>">
             </div>
             <br>             
             <div class="input-group">
                 <span class="input-group-addon "><span class="glyphicon glyphicon-user"></span> Nombre:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <input type="hidden" id="id_usuario" value="<?= $cu->ID ?>">
                 <input id="nombre" type="text" class="form-control  text-center" name="nombre" readonly value="<?= $cu->user_firstname.' '.$cu->user_lastname ?>">
             </div>
             <br>
@@ -100,13 +100,15 @@
             </div>                 
             <br> 
         </div>
-        <?php if ($cu_u->dias_vacaciones > 0 && !$boton_solicitud) { ?>
-            <div class="text-right">                
-                <a  value="Nueva solicitud" onclick="nueva_solicitud()"><span class="glyphicon glyphicon-plus"></span> Nueva solicitud</a>
-            </div>
-        <?php } ?>        
+        <div class="text-right" id="botones_solicitudes">   
+            <?php if ($cu_u->dias_vacaciones > 0 && !$boton_solicitud_vacaciones) { ?>             
+                <a value="Nueva solicitud" onclick="nueva_solicitud()"><span class="glyphicon glyphicon-plus"></span> Solicitar vacaciones</a>
+            <?php } if (!$boton_solicitud_permisos) { ?>
+                <a  onclick="nuevo_permiso()"><span class="glyphicon glyphicon-plus"></span> Solicitar permiso</a>
+            <?php } ?>
+        </div>       
     </div>
-    <div id="mi_div" class="row" style="display:none;" >   
+    <div id="div_nueva_solicitud" class="row" style="display:none;" >   
         <h4 class="text-center">Nueva solicitud de vacaciones</h4>
         <h5 class="text-center">Selecciona los días a disfrutar</h5>
         <br>
@@ -119,7 +121,7 @@
             <form action="" method="POST" enctype="multipart/form-data">                   
                 <div class="input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span> Días seleccionados:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <input id="dias_selec" type="text" class="form-control text-center" name="dias_selec" readonly>
+                    <input id="dias_selec" type="text" class="form-control text-center" name="dias_selec" value="0" readonly>
                 </div>
                 <br>
                 <div class="input-group">
@@ -137,9 +139,8 @@
                     <select class="form-control" id="resp" name="resp" required>
                         <option class="text-center" value="">Selecciona un responsable</option>
                         <?php foreach ($responsables as $responsable) { ?>
-                            <?php $user_info = get_userdata($responsable->id_user); ?>
                             <?php var_dump($user_info) ?>
-                            <option class="text-center" value="<?= $responsable->id_user ?>"><?= $user_info->first_name." ".$user_info->last_name ?></option>
+                            <option class="text-center" value="<?= $responsable->id_user ?>"><?= $responsable->nombre." ".$responsable->apellidos ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -148,45 +149,137 @@
             </form>
         </div> 
     </div>
-    <?php if ($solicitudes) { ?>
-        <div class="row">       
+    <div id="div_nuevo_permiso" class="row" style="display:none;" >   
+        <h4 class="text-center">Nueva solicitud de permiso</h4>
+        <h5 class="text-center">Selecciona los días a disfrutar</h5>
+        <br>
+        <div class="col-lg-6 text-center">
+            <div id="calendar_permiso" class="col-centered mi_tamaño"></div>
             <br><br>
-            <center>
-                <h2 class="color_vallas">Mis solicitudes</h2>
-            </center>
-            <br>
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <th class="color_vallas"><center><h5>Fecha</h5></center></th>
-                        <th class="color_vallas"><center><h5>Folio</h5></center></th>
-                        <th class="color_vallas"><center><h5>Días usados</h5></center></th>                        
-                        <th class="color_vallas"><center><h5>Responsable</h5></center></th>
-                        <th class="color_vallas"><center><h5>Comprobada</h5></center></th>
-                    </tr>
-                    <?php foreach ($solicitudes as $solicitud) { ?>
+        </div> 
+        <div class="col-md-6 text-center"> 
+            <br><br><br>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-folder-open"></span> Folio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <input id="folio_permiso" type="text" class="form-control text-center" name="folio_permiso" readonly>
+                </div>
+                <br>                   
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span> Días seleccionados:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <input id="dias_selec_permiso" type="text" class="form-control text-center" name="dias_selec_permiso" readonly>
+                </div>
+                <br>                                  
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span> Motivo del permiso:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <select class="form-control" id="motivo" name="motivo" required>
+                        <option class="text-center" value="">Selecciona un motivo de ausencia</option>
+                        <optgroup label="Permisos por Ley">
+                            <?php foreach ($permiso_ley as $permiso) { ?>
+                                <option class="text-center" value="<?= $permiso->id_motivo ?>"><?= $permiso->nombre." (".$permiso->tiempo.")  -  ".$permiso->documento_solicitado ?></option>
+                            <?php } ?>
+                        </optgroup>
+                        <optgroup label="Permisos extraordinarios">
+                            <?php foreach ($permiso_extraordinario as $permiso) { ?>
+                                <option class="text-center" value="<?= $permiso->id_motivo ?>"><?= $permiso->nombre."  -  ".$permiso->documento_solicitado ?></option>
+                            <?php } ?>
+                        </optgroup>
+                    </select>
+                </div>
+                <br>
+                <button type="submit" name="solicitar_permiso" class="btn btn-primary">Solicitar</button>
+            </form>
+        </div> 
+    </div>
+    <?php if ($solicitudes) { ?>             
+        <br><br>
+        <center>
+            <h2 class="color_vallas">Mis solicitudes</h2>
+        </center>
+        <?php if ($solicitudes_vacaciones) { ?>
+            <div class="row">  
+                <h5 class="color_vallas">Vacaciones</h5>
+                <br>
+                <div class="table-responsive">
+                    <table class="table">
                         <tr>
-                            <td class="color_vallas"><center><?php echo $solicitud->fecha;?></center></td>
-                            <td class="color_vallas"><center><?php echo $solicitud->id_solicitud;?></center></td>
-                            <td class="color_vallas"><center><?php echo $solicitud->dias_usados;?></center></td>
-                            <td class="color_vallas"><center><?php echo $solicitud->responsable;?></center></td>
-                            <td class="color_vallas"><center>
-                                <?php if ($solicitud->autorizado==1) { ?>
-                                    <span class="glyphicon glyphicon-ok" title="Aprobada"></span> 
-                                <?php }else{ ?>
-                                    <span class="glyphicon glyphicon-time" title="Esperando aprobación"></span>
-                                <?php }?>
-                                    
-                            </center></td>
-                            <td>
-                                <center>
-                                </center>
-                            </td>
+                            <th class="color_vallas text-center">Fecha</th>
+                            <th class="color_vallas text-center">Folio</th>
+                            <th class="color_vallas text-center">Días usados</th>          
+                            <th class="color_vallas text-center">Responsable</th>
+                            <th class="color_vallas text-center">Comprobada</th>
                         </tr>
-                    <?php } ?>
-                </table>
+                        <?php foreach ($solicitudes_vacaciones as $solicitud) { ?>
+                            <tr>
+                                <td class="color_vallas text-center"><small><?php echo $solicitud->fecha;?></small></td>
+                                <td class="color_vallas text-center"><small><?php echo $solicitud->id_solicitud;?></small></td>
+                                <td class="color_vallas text-center"><small><?php echo $solicitud->dias_usados;?></small></td>
+                                <td class="color_vallas text-center">
+                                    <small>
+                                        <?php 
+                                            $resp = $wpdb->get_row("SELECT nombre,apellidos FROM users WHERE id_user='$solicitud->responsable'"); 
+                                            if ($resp) {
+                                                echo $resp->nombre." ".$resp->apellidos;
+                                            }else{
+                                                echo "Solicitud no terminada";
+                                            }
+                                        ?>   
+                                    </small>
+                                </td>
+                                <td class="color_vallas text-center"><small>
+                                    <?php if ($solicitud->autorizado==1) { ?>
+                                        <span class="glyphicon glyphicon-ok" title="Aprobada"></span> 
+                                    <?php }else{ ?>
+                                        <span class="glyphicon glyphicon-time" title="Esperando aprobación"></span>
+                                    <?php }?>
+                                        
+                                </small></td>
+                                <td>
+                                    <center>
+                                    </center>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+                </div>
             </div>
-        </div>
+        <?php } ?>
+        <?php if ($solicitudes_permisos) { ?>
+            <div class="row">       
+                <h5 class="color_vallas">Permisos</h5>
+                <br>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th class="color_vallas text-center">Fecha</th>
+                            <th class="color_vallas text-center">Folio</th>
+                            <th class="color_vallas text-center">Días usados</th>          
+                            <th class="color_vallas text-center">Motivo</th>
+                            <th class="color_vallas text-center">Comprobada</th>
+                        </tr>
+                        <?php foreach ($solicitudes_permisos as $solicitud) { ?>
+                            <tr>
+                                <td class="color_vallas text-center"><small><?php echo $solicitud->fecha;?></small></td>
+                                <td class="color_vallas text-center"><small><?php echo $solicitud->id_solicitud;?></small></td>
+                                <td class="color_vallas text-center"><small><?php echo $solicitud->dias_usados;?></small></td>
+                                <td class="color_vallas text-center"><small><?= $wpdb->get_var("SELECT nombre FROM motivo_permiso WHERE id_motivo='$solicitud->id_motivo'"); ?></small></td>
+                                <td class="color_vallas text-center">
+                                    <?php if ($solicitud->autorizado==1) { ?>
+                                        <span class="glyphicon glyphicon-ok" title="Aprobada"></span> 
+                                    <?php }else{ ?>
+                                        <span class="glyphicon glyphicon-time" title="Esperando aprobación"></span>
+                                    <?php }?>
+                                </td>
+                                <td>
+                                    <center>
+                                    </center>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+                </div>
+            </div>
+        <?php } ?>        
         <br>
         <div class="text-right">            
             <li><span class="glyphicon glyphicon-ok" title="Aprobada"></span> Solicitudes aprobadas</li>
@@ -196,7 +289,6 @@
 </div>
 <?php get_sidebar(); ?>
 <script src="<?= get_template_directory_uri().'/js/fullcalendar.min.js'?>" type="text/javascript"></script>
-<script src="<?= get_template_directory_uri().'/js/jspdf/fullcalendar.min.js'?>" type="text/javascript"></script>
 <link href="<?= get_template_directory_uri().'/css/fullcalendar.css'?>" rel='stylesheet'/>
 <script src="<?= get_template_directory_uri().'/js/script_page_inicio.js'?>"></script>
 <script>
@@ -213,8 +305,8 @@
     var id_solicitud=0;
     var dias_disponibles='<?= $cu_u->dias_vacaciones ?>';
     eventos();
-    function crear_calendario(){
-        $('#calendar').fullCalendar({
+    function crear_calendario(id_calendario,tipo_solicitud){
+        $(id_calendario).fullCalendar({
             header:{
                 left: 'prev',
                 center: 'title',
@@ -237,8 +329,24 @@
             select: function(start, end, jsEvent) {
                 start = moment(start).format('YYYY-MM-DD');
                 end = moment(end).format('YYYY-MM-DD');
-                var diff_dias = moment(end).diff(start, 'd');  
-                if (dias_disponibles >= (dias_usados+diff_dias)) {
+                if (start>=moment().format('YYYY-MM-DD') && end>=moment().format('YYYY-MM-DD')) {
+                    var diff_dias = moment(end).diff(start, 'd');                      
+                    if(tipo_solicitud =='vacaciones'){
+                        if (dias_disponibles >= (dias_usados+diff_dias)) {
+                            var data = {
+                                'action': 'nuevo_evento',
+                                'id_solicitud':id_solicitud,
+                                'start':String(start),
+                                'end':String(end),
+                                'dias':diff_dias
+                            };
+                            jQuery.post(ajaxurl, data, function(response) {                        
+                                eventos(id_calendario,tipo_solicitud); 
+                            });
+                        }else{
+                            swal('¡Alto!', 'No puedes exceder los días de vacaciones disponibles', 'error');
+                        }
+                    }else if(tipo_solicitud=='permisos'){
                         var data = {
                             'action': 'nuevo_evento',
                             'id_solicitud':id_solicitud,
@@ -246,13 +354,13 @@
                             'end':String(end),
                             'dias':diff_dias
                         };
-                        jQuery.post(ajaxurl, data, function(response) {
-                            console.log(response);                              
-                            eventos(); 
+                        jQuery.post(ajaxurl, data, function(response) {               
+                            eventos(id_calendario,tipo_solicitud); 
                         });
-                    }else{
-                        swal('¡Alto!', 'No puedes exceder los días de vacaciones disponobles', 'error');
                     }
+                }else{
+                    swal('¡Alto!', 'No puedes seleccionar fechas anteriores', 'error');
+                }
             },
             eventRender: function(event, element) {
                 element.bind('dblclick', function() {
@@ -261,8 +369,7 @@
                         'id_evento': event.id
                     };
                     jQuery.post(ajaxurl, data, function(response) {
-                        console.log(response); 
-                        eventos(); 
+                        eventos(id_calendario,tipo_solicitud); 
                     });
                 });
             },
@@ -271,20 +378,64 @@
         }); 
     }
     function nueva_solicitud(){
-        div = document.getElementById('mi_div');
-        div.style.display ='';
+        swal({
+            title: 'Estas seguro?',
+            text: "Una vez iniciado el proceso debes terminarlo!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'Cancelar'
+        }).then(function () {
+            nueva_solicitud_confirmada()
+        });        
+    }
+    function nueva_solicitud_confirmada(){
+        document.getElementById('div_nueva_solicitud').style.display ='';
+        document.getElementById('botones_solicitudes').style.display ='none';
         id_usuario=document.getElementById("id_usuario").value;
         var data_eventos={
             'action':'nuevo_folio',
-            'id_usuario':id_usuario
+            'tipo':'Vacaciones',
+            'id_user':id_usuario
         };
         jQuery.post(ajaxurl,data_eventos,function(response){
             document.getElementById("folio").value=response;
             id_solicitud=response;
         });
-        crear_calendario();
+        crear_calendario('#calendar','vacaciones');
     }
-    function eventos(){
+    function nuevo_permiso(){
+        swal({
+            title: 'Estas seguro?',
+            text: "Una vez iniciado el proceso debes terminarlo!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'Cancelar'
+        }).then(function () {
+            nuevo_permiso_confirmado()
+        });         
+    }
+    function nuevo_permiso_confirmado(){
+        document.getElementById('div_nuevo_permiso').style.display ='';
+        document.getElementById('botones_solicitudes').style.display ='none';
+        id_usuario=document.getElementById("id_usuario").value;
+        var data_eventos={
+            'action':'nuevo_folio',
+            'tipo':'Permisos',
+            'id_user':id_usuario
+        };
+        jQuery.post(ajaxurl,data_eventos,function(response){
+            document.getElementById("folio_permiso").value=response;
+            id_solicitud=response;
+        });
+        crear_calendario('#calendar_permiso','permisos');
+    }
+    function eventos(id_calendario,tipo_solicitud){
         events_arr=new Array();
         var data_eventos={
             'action':'obtener_eventos',
@@ -293,6 +444,8 @@
         jQuery.post(ajaxurl,data_eventos,function(response){
             datos = JSON.parse(response);
             dias_usados=0;
+            console.log(datos);
+            console.log("tamaño: "+datos.length);
             for (i=0;i<datos.length;i++){
                 event = new Object();   
                 event.title= 'Ok';
@@ -302,13 +455,16 @@
                 event.editable= true;
                 events_arr.push(event);
                 dias_usados=dias_usados+parseInt(datos[i]['dias']);
-
             }
-            document.getElementById("dias_selec").value=dias_usados;
-            document.getElementById("dias_restantes").value=dias_disponibles-dias_usados;
-            $('#calendar').fullCalendar("removeEvents");        
-            $('#calendar').fullCalendar('addEventSource', events_arr);      
-            $('#calendar').fullCalendar('refetchEvents'); 
+            if(tipo_solicitud=='vacaciones'){                
+                document.getElementById("dias_selec").value=dias_usados;
+                document.getElementById("dias_restantes").value=dias_disponibles-dias_usados;
+            }else if(tipo_solicitud=='permisos'){
+                document.getElementById("dias_selec_permiso").value=dias_usados;
+            }
+            $(id_calendario).fullCalendar("removeEvents");        
+            $(id_calendario).fullCalendar('addEventSource', events_arr);      
+            $(id_calendario).fullCalendar('refetchEvents'); 
         });
     }
 </script>

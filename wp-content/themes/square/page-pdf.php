@@ -88,10 +88,11 @@
 	                    <th class="text-center"><p>AL</p></th>
 	                </tr>
 	                <?php foreach ($eventos as $evento) { ?>
+	                	<?php $fecha = date($evento->fin); ?>
 	                    <tr>
 	                        <td class="text-center"><p><?= $evento->dias;?></p></td>
 	                        <td class="text-center"><p><?= $evento->inicio;?></p></td>
-	                        <td class="text-center"><p><?= $evento->fin;?></p></td>
+	                        <td class="text-center"><p><?= date('Y-m-d', strtotime($fecha . "-1 days"));?></p></td>
 	                    </tr>
 	                <?php } ?>
 	            </table>
@@ -99,7 +100,7 @@
 	        <div class="row">
 	        	<h5>RESPONSABLE EN MI AUSENCIA</h5>
 	        	<?php $responsable = $wpdb->get_row("SELECT nombre,apellidos FROM users WHERE id_user = '$solicitud->responsable'"); ?>
-	        	<input type="text" class="form-control text-center" value="<?=  $responsable->nombre." ".$responsable->apellidos ?>">	        	
+	        	<input type="text" class="form-control text-center" value="<?=  $responsable->nombre." ".$responsable->apellidos ?>" disabled>	        	
 	        </div>
 	        <br>
 	        <div class="row">

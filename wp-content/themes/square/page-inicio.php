@@ -9,7 +9,7 @@
     $cu = wp_get_current_user();
     $cu_u = $wpdb->get_row( "SELECT * FROM users WHERE id_user = '$cu->user_login'" );
     $area = $wpdb->get_var("SELECT id_area FROM departamentos WHERE id_departamento = $cu_u->departamento");
-    $responsables = $wpdb->get_results("SELECT u.id_user,u.nombre,u.apellidos FROM users AS u, departamentos AS d WHERE d.id_area = '$area' AND d.id_departamento = u.departamento AND u.id_user <> '$cu->user_login';");
+    $responsables = $wpdb->get_results("SELECT u.id_user,u.nombre,u.apellidos FROM users AS u, departamentos AS d WHERE d.id_area = '$area' AND d.id_departamento = u.departamento AND u.id_user <> '$cu->user_login' ORDER BY u.nombre;");
     $solicitudes = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->user_login' ORDER BY id_solicitud DESC");
     $solicitudes_vacaciones = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->user_login' AND tipo = 'Vacaciones' ORDER BY id_solicitud DESC");
     $solicitudes_permisos = $wpdb->get_results( "SELECT * FROM solicitudes WHERE id_user='$cu->user_login' AND tipo = 'Permisos' ORDER BY id_solicitud DESC");
@@ -27,6 +27,7 @@
             $boton_solicitud_permisos = true;
         }
     }
+    $mi_area = $wpdb->get_results("SELECT * FROM users WHERE responsable_area = '$cu->ID'");
 ?>
 <style>
     #calendar {
@@ -145,11 +146,11 @@
                     </select>
                 </div>
                 <br>
-                <button type="submit" name="enviar" class="btn btn-primary">Enviar</button>
+                <button type="submit" name="enviar" id="enviar" class="btn btn-primary" disabled>Enviar</button>
             </form>
         </div> 
     </div>
-    <div id="div_nuevo_permiso" class="row" style="display:none;" >   
+    <div id="div_nuevo_permiso" class="row" style="display:none;">   
         <h4 class="text-center">Nueva solicitud de permiso</h4>
         <h5 class="text-center">Selecciona los días a disfrutar</h5>
         <br>
@@ -187,17 +188,24 @@
                     </select>
                 </div>
                 <br>
-                <button type="submit" name="solicitar_permiso" class="btn btn-primary">Solicitar</button>
+                <button type="submit" name="solicitar_permiso" id="solicitar_permiso" class="btn btn-primary" disabled>Solicitar</button>
             </form>
         </div> 
     </div>
+    <?php if ($mi_area) { ?>
+        <br>
+        <h2 class="color_vallas">Mi área</h2>
+        <div class="col-xs-12 col-ms-12 col-md-12 col-lg-12 col-xl-12 text-center">
+            <div id="calendar_mi_area" class="col-centered mi_tamaño"></div>
+        </div> 
+    <?php } ?>
     <?php if ($solicitudes) { ?>             
         <br><br>
         <center>
             <h2 class="color_vallas">Mis solicitudes</h2>
         </center>
         <?php if ($solicitudes_vacaciones) { ?>
-            <div class="row">  
+            <div class="row">
                 <h5 class="color_vallas">Vacaciones</h5>
                 <br>
                 <div class="table-responsive">
@@ -205,7 +213,7 @@
                         <tr>
                             <th class="color_vallas text-center">Fecha</th>
                             <th class="color_vallas text-center">Folio</th>
-                            <th class="color_vallas text-center">Días usados</th>          
+                            <th class="color_vallas text-center">Días usados</th>
                             <th class="color_vallas text-center">Responsable</th>
                             <th class="color_vallas text-center">Comprobada</th>
                         </tr>
@@ -287,7 +295,8 @@
         </div>
     <?php } ?>
 </div>
-<?php get_sidebar(); ?>
+<br>
+<?php get_footer(); ?>
 <script src="<?= get_template_directory_uri().'/js/fullcalendar.min.js'?>" type="text/javascript"></script>
 <link href="<?= get_template_directory_uri().'/css/fullcalendar.css'?>" rel='stylesheet'/>
 <script src="<?= get_template_directory_uri().'/js/script_page_inicio.js'?>"></script>
@@ -327,6 +336,7 @@
                 day: 'dia'
             },
             select: function(start, end, jsEvent) {
+                $('.calendar').fullCalendar('changeView', 'agendaWeek');
                 start = moment(start).format('YYYY-MM-DD');
                 end = moment(end).format('YYYY-MM-DD');
                 if (start>=moment().format('YYYY-MM-DD') && end>=moment().format('YYYY-MM-DD')) {
@@ -376,6 +386,7 @@
             selectOverlap:false,
             eventStartEditable: false
         }); 
+        $(id_calendario).fullCalendar({selectable: true});
     }
     function nueva_solicitud(){
         swal({
@@ -459,8 +470,18 @@
             if(tipo_solicitud=='vacaciones'){                
                 document.getElementById("dias_selec").value=dias_usados;
                 document.getElementById("dias_restantes").value=dias_disponibles-dias_usados;
+                if (dias_usados == 0) {
+                    document.getElementById("enviar").disabled = true;
+                }else{
+                    document.getElementById("enviar").disabled = false;
+                }
             }else if(tipo_solicitud=='permisos'){
                 document.getElementById("dias_selec_permiso").value=dias_usados;
+                if (dias_usados == 0) {
+                    document.getElementById("solicitar_permiso").disabled = true;
+                }else{
+                    document.getElementById("solicitar_permiso").disabled = false;
+                }
             }
             $(id_calendario).fullCalendar("removeEvents");        
             $(id_calendario).fullCalendar('addEventSource', events_arr);      
@@ -468,3 +489,46 @@
         });
     }
 </script>
+<?php if ($mi_area) { ?>
+<?php $evns_area = $wpdb->get_results("SELECT tipo, nombre, apellidos, id, inicio, fin, dias, autorizado FROM solicitudes AS s, users AS u, eventos AS e WHERE responsable_area = '$cu->ID' AND s.id_user = u.id_user AND s.id_solicitud = e.id_solicitud;") ?>
+    <script>
+        $('#calendar_mi_area').fullCalendar({
+            header:{
+                center: 'title',
+                right: 'prev,next today'
+            },
+            defaultView: 'month',
+            selectable: false,
+            allDaySlot: false,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio','Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNameShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles','Jueves', 'Viernes', 'Sabado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            buttonText: {
+                today: 'Hoy',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día'
+            },
+            eventStartEditable: false
+        }); 
+        events_array = new Array();
+        <?php foreach ($evns_area as $evn) { ?>
+            event           = new Object();   
+            event.title     = "<?= $evn->tipo.' '.$evn->nombre.' '.$evn->apellidos ?>";
+            event.id        = '<?= $evn->id ?>';
+            event.start     = '<?= $evn->inicio ?>'; 
+            event.end       = '<?= $evn->fin ?>';
+            <?php if ($evn->autorizado) { ?>
+                event.color     = '#21610B';
+            <?php }else{ ?>
+                event.color     = '#8A4B08';
+            <?php } ?>
+            event.editable  = false;
+            events_array.push(event);
+        <?php } ?>        
+        $('#calendar_mi_area').fullCalendar("removeEvents");        
+        $('#calendar_mi_area').fullCalendar('addEventSource', events_array);      
+        $('#calendar_mi_area').fullCalendar('refetchEvents');
+    </script>
+<?php } ?>

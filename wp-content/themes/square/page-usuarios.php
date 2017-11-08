@@ -21,7 +21,7 @@ get_header(); ?>
 		}
 		$offset = ($pageNum - 1) * $rowsPerPage;
 		$total_paginas = ceil($num_total_registros / $rowsPerPage);
-		$query_usuarios = $wpdb->get_results("SELECT w.ID, w.user_login, w.user_login,u.departamento,u.puesto,u.comentario,u.responsable_area,u.jefe,u.estado,e.id_pais,u.ubicacion,empresa_contratante,u.fecha_ingreso,u.dias_vacaciones FROM wp_users AS w, users AS u, estados AS e WHERE u.estado=e.id_estado and w.user_login=u.id_user ORDER BY u.nombre LIMIT $offset, $rowsPerPage");
+		$query_usuarios = $wpdb->get_results("SELECT w.ID, w.user_login, w.user_login,u.nombre,u.apellidos,u.departamento,u.puesto,u.comentario,u.responsable_area,u.jefe,u.estado,e.id_pais,u.ubicacion,empresa_contratante,u.fecha_ingreso,u.dias_vacaciones FROM wp_users AS w, users AS u, estados AS e WHERE u.estado=e.id_estado and w.user_login=u.id_user ORDER BY u.nombre LIMIT $offset, $rowsPerPage");
 	}
 	$users=$wpdb->get_results("SELECT w.ID FROM wp_users AS w, users AS u WHERE w.user_login=u.id_user ORDER BY u.nombre");
 ?>
@@ -55,15 +55,16 @@ get_header(); ?>
 								<?php $user_area = $wpdb->get_row("SELECT * FROM areas WHERE id_area = '$user_departamento->id_area'"); ?>
 								<tr>
 									<td class="text-center"><p><small><?= $usuario->user_login ?></small></p></td>
-									<td><p><small><?= $user_info->first_name." ".$user_info->last_name  ?></small></p></td>
+									<td><p><small><?= $usuario->nombre." ".$usuario->apellidos  ?></small></p></td>
 									<td><p><small><?= $user_area->nombre ?></small></p></td>
 									<td><p><small><?= $user_departamento->nombre ?></small></p></td>
 									<td><p><small><?= $usuario->ubicacion ?></small></p></td>
-									<td class="text-center"><p><small><?= $wpdb->get_var("SELECT razon_social FROM empresas WHERE id_empresa='$usuario->empresa_contratante'") ?></small></p></td>
-									<td class="text-center"><p><small><?= $usuario->dias_vacaciones ?></small></p></td>
+									<td class="text-center"><p><small><?= $wpdb->get_var("SELECT razon_social FROM empresas WHERE id_empresa='$usuario->empresa_contratante'") ?></small></p></td>								
+									<td class="text-center"><p><small><?= $usuario->fecha_ingreso ?></small></p></td>
+									<td class="text-center"><p><small><?= $usuario->dias_vacaciones ?></small></p></td>	
 									<td class="text-center" width="90px">
 										<div class="btn-group">
-											<a id="<?= $usuario->user_login ?>" onclick="llenar_modal_edicion(this.id,'<?= $user_info->first_name ?>','<?= $user_info->last_name ?>','<?= $user_info->user_email ?>','<?= $user_area->id_area ?>','<?= $usuario->departamento ?>','<?= $usuario->puesto ?>','<?= $usuario->responsable_area ?>','<?= $usuario->jefe ?>','<?= $usuario->id_pais ?>','<?= $usuario->estado ?>','<?= $usuario->ubicacion ?>','<?= $usuario->empresa_contratante ?>','<?= $usuario->fecha_ingreso ?>','<?= $usuario->dias_vacaciones ?>','<?= $usuario->comentario ?>')" data-toggle="modal" data-target="#myModal1" data-dismiss="modal" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+											<a id="<?= $usuario->user_login ?>" onclick="llenar_modal_edicion(this.id,'<?= $usuario->nombre ?>','<?= $usuario->apellidos ?>','<?= $user_info->user_email ?>','<?= $user_area->id_area ?>','<?= $usuario->departamento ?>','<?= $usuario->puesto ?>','<?= $usuario->responsable_area ?>','<?= $usuario->jefe ?>','<?= $usuario->id_pais ?>','<?= $usuario->estado ?>','<?= $usuario->ubicacion ?>','<?= $usuario->empresa_contratante ?>','<?= $usuario->fecha_ingreso ?>','<?= $usuario->dias_vacaciones ?>','<?= $usuario->comentario ?>')" data-toggle="modal" data-target="#myModal1" data-dismiss="modal" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
 											<a id="<?= $usuario->ID ?>" onclick="llenar_id_eliminar(this.id)" data-toggle="modal" data-target="#myModal2" data-dismiss="modal" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> </a>
 										</div>
 									</td>
@@ -283,7 +284,6 @@ get_header(); ?>
 		</div>
 	</div>
 </div>
-<?php get_sidebar(); ?>
 <script>
 	function llenar_modal_edicion(id_click,nombre,apellidos,correo,area,departamento,puesto,responsable,jefe,pais,estado,ubicacion,empresa,fecha,dias,comentario){
 		change_pais(pais,estado);		

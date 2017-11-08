@@ -1,6 +1,4 @@
 <?php
-    //get_header(); 
-	//obtener folio 
 	$folio=$_GET['folio'];
     $solicitud = $wpdb->get_row( "SELECT * FROM solicitudes WHERE id_solicitud = '$folio'" );
     $usuario = $wpdb->get_row( "SELECT * FROM users WHERE id_user = '$solicitud->id_user'" );
@@ -91,10 +89,11 @@
 	                    <th ><center><h5>AL</h5></center></th>
 	                </tr>
 	                <?php foreach ($eventos as $evento) { ?>
+	                	<?php $fecha = date($evento->fin); ?>
 	                    <tr>
 	                        <td ><center><?= $evento->dias;?></center></td>
 	                        <td ><center><?= $evento->inicio;?></center></td>
-	                        <td ><center><?= $evento->fin;?></center></td>
+	                        <td ><center><?= date('Y-m-d', strtotime($fecha . "-1 days"));?></center></td>
 	                    </tr>
 	                <?php } ?>
 	            </table>

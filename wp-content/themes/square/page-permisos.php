@@ -184,7 +184,6 @@ get_header(); ?>
 		</div>
 	</div>
 </div>
-<?php get_sidebar(); ?>
 <script>
 	function llenar_folio_confirmacion(id_click){
 		document.getElementById("folio_modal_conf").value = id_click;

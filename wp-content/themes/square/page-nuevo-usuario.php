@@ -133,6 +133,7 @@
         </div>
     </form>
 </div>
+<?php get_footer(); ?>
 <script>
     var ajaxurl = '<?= admin_url( 'admin-ajax.php' ); ?>';
     function change_pais(id_pais){

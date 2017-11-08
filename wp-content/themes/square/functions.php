@@ -47,8 +47,10 @@ function actualizar_usuario(){
 	$fecha 			= isset($_POST['fecha_modal_editar']) 		? $_POST['fecha_modal_editar'] 			: "";
 	$dias 			= isset($_POST['dias_modal_editar']) 		? $_POST['dias_modal_editar'] 			: 0;
 	$comentario		= isset($_POST['comentario_modal_editar']) 	? $_POST['comentario_modal_editar'] 	: "";
-
-	$user_data 		= wp_update_user( array( 'ID' => $id, 'first_name' => $nombre, 'last_name' => $apellidos, 'user_email' => $correo ) );
+	$id_wp_users 	= $wpdb->get_var("SELECT ID FROM wp_users WHERE user_login = '$id'");
+	$update 		= $wpdb->update('wp_users',['user_email'=> $correo],['ID'=>$id_wp_users],['%s'],['%d']);
+	update_user_meta($id_wp_users, 'first_name', $apellidos);
+	update_user_meta($id_wp_users, 'last_name', $nombre);
  	$update 		= $wpdb->update(
 		'users',
 		[
@@ -68,12 +70,7 @@ function actualizar_usuario(){
 		['%s','%s','%s','%d','%d','%d','%s','%s','%s','%d','%s'],
 		['%d']
 	);
-	var_dump($update);
-	if ($update ) {
-	   echo "<script>swal('Actualizado!', 'Disfruta tus vacaciones!', 'success'); </script>";
-	}else{
-		echo "<script>swal('¡Error!', 'No se ha podido editar el usuario', 'error');  </script>";
-	}
+	echo "<script>swal('Actualizado!', 'Los datos del usuario han sido actualizados exitosamente!', 'success'); </script>";
 }
 /*function hola(){
 	global $wpdb;
@@ -307,7 +304,9 @@ function nuevo_folio() {
 	global $wpdb; 
 	$id_user = intval($_POST['id_user']);
 	$tipo = $_POST['tipo'];
-	$nuso=$wpdb->insert('solicitudes', ['id_user' => $id_user,'tipo' => $tipo], ['%d','%s']);
+	date_default_timezone_set('america/mexico_city');
+    $fecha_hora=date('Y-m-d H:i:s');
+	$nuso=$wpdb->insert('solicitudes', ['id_user' => $id_user,'tipo' => $tipo, 'fecha' => $fecha_hora], ['%d','%s','%s']);
 	if ($nuso) {
 		echo ($wpdb->get_var("SELECT max(id_solicitud) FROM solicitudes WHERE id_user=$id_user"));
 	}else{
@@ -397,7 +396,7 @@ function square_add_excerpt_support_for_pages() {
 	add_post_type_support( 'page', 'excerpt' );
 }
 add_action( 'init', 'square_add_excerpt_support_for_pages' );
-
+add_filter( 'show_admin_bar', '__return_false' );
 //Register widget area.
 function square_widgets_init() {
 	register_sidebar( array(
